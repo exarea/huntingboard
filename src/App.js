@@ -33,19 +33,15 @@ class App extends Component {
         this.setState({ user: user.displayName });
         this.setState({ userID: user.uid });
         this.setState({ userPhoto: user.photoURL });
-
       });
   };
 
   // user={this.state.user} userphoto={this.state.userPhoto}
   render() {
     return (
-      <Nav user={this.state.user}>
+      <Nav photoURL={this.state.userPhoto}>
         {this.state.user ?
-          <div>
-            <img src={this.state.userPhoto} alt="blah blah"></img>
-            <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
-          </div>
+          <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
           :
           <Button bsStyle="primary" onClick={this.login}>Login</Button>
         }
