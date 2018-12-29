@@ -40,16 +40,16 @@ class App extends Component {
   // user={this.state.user} userphoto={this.state.userPhoto}
   render() {
     return (
-      <div>
+      <Nav user={this.state.user}>
         {this.state.user ?
           <div>
-          <img src={this.state.userPhoto} alt="blah blah"></img>
+            <img src={this.state.userPhoto} alt="blah blah"></img>
             <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
           </div>
           :
           <Button bsStyle="primary" onClick={this.login}>Login</Button>
         }
-      </div>
+      </Nav>
     );
   };
 };
