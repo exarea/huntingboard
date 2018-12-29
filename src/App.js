@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import './App.css';
 import Nav from "./Components/Nav";
 import { auth, provider } from "./utils/firebase";
+
+import Board from "./Pages/Board/Board";
 
 class App extends Component {
 
@@ -39,13 +42,20 @@ class App extends Component {
   // user={this.state.user} userphoto={this.state.userPhoto}
   render() {
     return (
-      <Nav photoURL={this.state.userPhoto}>
-        {this.state.user ?
-          <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
-          :
-          <Button bsStyle="primary" onClick={this.login}>Login</Button>
-        }
-      </Nav>
+      <Router>
+        <div>
+          <Nav photoURL={this.state.userPhoto}>
+            {this.state.user ?
+              <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
+              :
+              <Button bsStyle="primary" onClick={this.login}>Login</Button>
+            }
+          </Nav>
+          <Switch>
+            <Route exact path="/" component={Board} />
+          </Switch>
+        </div>
+      </Router>
     );
   };
 };
