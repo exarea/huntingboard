@@ -1,13 +1,23 @@
 import React from 'react';
 import "./Board.css";
 import { Grid, Row, Col, Panel, Button } from "react-bootstrap";
+// import { auth, provider } from "../../utils/firebase.js"
 
 class Board extends React.Component {
+    // constructor(props) {
+    //     super(props);
+    // }
+
+    // componentDidMount(props) {
+    //     console.log(props.user)
+    // }
+        
+
     render() {
         return (
             <Grid>
                 <Row className="show-grid">
-                    <Col xs={10} center>
+                    <Col xs={10}>
                         <Panel bsClass="bg-warning">
                             <Row>
                                 <Col xs={9}>

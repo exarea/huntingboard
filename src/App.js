@@ -13,6 +13,7 @@ class App extends Component {
     super();
     this.state = {
       user: null,
+      exists: false,
       userID: "",
       userPhoto: "",
       admin: false,
@@ -25,6 +26,9 @@ class App extends Component {
     auth.signOut()
       .then(() => {
         this.setState({ user: null });
+        this.setState({ exists: false })
+        this.setState({ userID: "" });
+        this.setState({ userPhoto: "" });
       });
   };
 
@@ -34,12 +38,12 @@ class App extends Component {
         console.log(result.user);
         var user = result.user;
         this.setState({ user: user.displayName });
+        this.setState({ exists: true })
         this.setState({ userID: user.uid });
         this.setState({ userPhoto: user.photoURL });
       });
   };
 
-  // user={this.state.user} userphoto={this.state.userPhoto}
   render() {
     return (
       <Router>
@@ -52,7 +56,11 @@ class App extends Component {
             }
           </Nav>
           <Switch>
-            <Route exact path="/" component={Board} />
+            {this.state.exists === true ?
+              <Route exact path="/" render={() => <Board />} />
+              :
+              <Route exact path="/" render={() => <Button bsStyle="primary" onClick={this.login}>Login</Button>} />
+            }
           </Switch>
         </div>
       </Router>
