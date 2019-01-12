@@ -1,7 +1,8 @@
 import React from 'react';
 import "./Board.css";
-import { Grid, Row, Col, Panel, Button, Label, FormGroup, InputGroup, FormControl } from "react-bootstrap";
+import { Grid, Row, Col, Panel, Button } from "react-bootstrap";
 import firebase from "../../utils/firebase";
+// import RequestModal from "../../Components/RequestModal/RequestModal"
 
 class Board extends React.Component {
 
@@ -16,13 +17,12 @@ class Board extends React.Component {
             payout: "",
             item: "",
             quantity: "",
-            status: ""
-            // accepted: "",
+            status: "",
+            accepted: false,
             // completed: "",
             // finalized: "",
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.acceptRequest = this.acceptRequest.bind(this);
     };
 
     componentDidMount() {
@@ -42,100 +42,31 @@ class Board extends React.Component {
                     item: huntingRequest[info].item,
                     quantity: huntingRequest[info].quantity,
                     status: huntingRequest[info].status,
-                    // accepted: huntingRequest[info].accepted,
+                    accepted: huntingRequest[info].accepted,
                     // completed: huntingRequest[info].completed,
                     // finalized: huntingRequest[info].finalized
                 });
             };
+          
             this.setState({ huntingRequestList: newState });
         });
     };
 
-    handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
-    };
-
-    handleSubmit(event) {
-        event.preventDefault();
-
-        console.log("date: " + this.state.date);
-        console.log("poster: " + this.state.poster);
-        console.log("farmer: Open");
-        console.log("payout: " + this.state.payout + "zeny");
-        console.log("item: " + this.state.item);
-        console.log("quantity: " + this.state.quantity);
-        console.log("status: " + this.state.status);
-
-        const huntingRequest = firebase.database().ref("huntingRequest");
-        const info = {
-            date: this.state.date,
-            poster: this.state.poster,
-            farmer: "Open",
-            payout: this.state.payout + "zeny",
-            item: this.state.item,
-            quantity: this.state.quantity,
-            status: "Open"
-        };
-        huntingRequest.push(info);
-
-        this.setState({ submitted: true });
-        event.target.reset();
+    acceptRequest() {
+        console.log(this.props.user)
+        firebase.database().ref("huntingRequest/Nicholas Chan").update({ 
+            farmer: this.props.user,
+            accepted: true
+        });
     };
 
     render() {
         return (
             <Grid>
                 <Row className="show-grid">
-                    <Col xs={10}>
-                        <Panel bsClass="bg-white">
-                            {!this.state.submitted ? (
-                                <Panel>
-                                    <Panel.Body>
-                                        <form onSubmit={this.handleSubmit}>
-                                            <FormGroup>
-                                                <h3>
-                                                    Today's Date: {this.state.date}
-                                                </h3>
-                                                <InputGroup>
-                                                    <Label>Character IGN: </Label>
-                                                    <FormControl type="text" className="form-control" name="poster" size="20" placeholder="Mosjoandy" onChange={this.handleChange} required />
-                                                </InputGroup>
-                                                <InputGroup>
-                                                    <Label>Payout: </Label>
-                                                    <FormControl type="number" className="form-control" name="payout" min="1" max="100000000" size="9" placeholder="3550000" onChange={this.handleChange} required />
-                                                </InputGroup>
-                                                <InputGroup>
-                                                    <Label>Item: </Label>
-                                                    <FormControl type="text" className="form-control" name="item" size="20" placeholder="Strange Steel Piece" onChange={this.handleChange} required />
-                                                </InputGroup>
-                                                <InputGroup>
-                                                    <Label>Quantity: </Label>
-                                                    <FormControl type="number" className="form-control" name="quantity" min="1" max="4" size="4" placeholder="690" onChange={this.handleChange} required />
-                                                </InputGroup>
-                                            </FormGroup>
-                                            <Button
-                                                type="submit"
-                                                className="btn"
-                                                value="Submit"
-                                            >New Request</Button>
-                                        </form>
-                                    </Panel.Body>
-                                </Panel>
-                            ) : (
-                                    <Panel>
-                                        <Panel.Body>
-                                            <p className="text-center">Submitted</p>
-                                        </Panel.Body>
-                                    </Panel>
-                                )}
-                        </Panel>
-                    </Col>
-                </Row>
-
-                <Row className="show-grid">
-                    <Col xs={10}>
-                        {this.state.huntingRequestList.map((huntingRequestList) =>
-                            <Panel bsStyle="success" key={huntingRequestList.id}>
+                    {this.state.huntingRequestList.map((huntingRequestList) =>
+                        <Col md={5} key={huntingRequestList.id}>
+                            <Panel bsStyle="success">
                                 <Panel.Heading>
                                     <Panel.Title>
                                         <div className="text-left">Hunting Request: {huntingRequestList.item}</div>
@@ -160,35 +91,18 @@ class Board extends React.Component {
                                     </Row>
                                 </Panel.Body>
                                 <Panel.Footer>
-                                    <Button>Accept</Button>
+                                    <Button onClick={this.acceptRequest}>Accept</Button>
                                     <Button>Items Sent</Button>
                                     <Button>Payment Sent</Button>
                                     <Button>something</Button>
                                 </Panel.Footer>
                             </Panel>
-
-                        )}
-
-                    </Col>
+                        </Col>
+                    )}
                 </Row>
             </Grid>
-        )
-    }
+        );
+    };
+};
 
-}
-
-// <Panel.Footer>
-// <Col xs={3} className="text-center">
-//     <Button>Accept</Button>
-// </Col>
-// <Col xs={3} className="text-center">
-//     <Button>Items Sent</Button>
-// </Col>
-// <Col xs={3} className="text-center">
-//     <Button>Payment Sent</Button>
-// </Col>
-// <Col xs={3} className="text-center">
-//     <Button>something</Button>
-// </Col>
-// </Panel.Footer>
 export default Board

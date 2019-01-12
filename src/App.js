@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Grid, Button } from "react-bootstrap";
 import './App.css';
 import Nav from "./Components/Nav";
 import { auth, provider } from "./utils/firebase";
 
 import Board from "./Pages/Board/Board";
+import RequestModal from "./Components/RequestModal/RequestModal";
 
 class App extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       user: null,
       userExists: false,
@@ -23,8 +24,7 @@ class App extends Component {
   };
 
   logout() {
-    auth.signOut()
-      .then(() => {
+    auth.signOut().then(() => {
         this.setState({ user: null });
         this.setState({ userExists: false })
         this.setState({ userID: "" });
@@ -33,8 +33,7 @@ class App extends Component {
   };
 
   login() {
-    auth.signInWithPopup(provider)
-      .then((result) => {
+    auth.signInWithPopup(provider).then((result) => {
         console.log(result.user);
         var user = result.user;
         this.setState({ user: user.displayName });
@@ -63,7 +62,12 @@ class App extends Component {
             }
           </Switch> */}
           <Switch>
-              <Route exact path="/" render={() => <Board />} />
+            <Route exact path="/" render={() =>
+              <Grid>
+                <RequestModal user={this.state.user}/>
+                <Board user={this.state.user}/>
+              </Grid>
+            } />
           </Switch>
         </div>
       </Router>
