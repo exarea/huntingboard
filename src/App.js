@@ -55,12 +55,15 @@ class App extends Component {
               <Button bsStyle="primary" onClick={this.login}>Login</Button>
             }
           </Nav>
-          <Switch>
+          {/* <Switch>
             {this.state.userExists === true ?
               <Route exact path="/" render={() => <Board />} />
               :
               <Route exact path="/" render={() => <Button bsStyle="primary" onClick={this.login}>Login</Button>} />
             }
+          </Switch> */}
+          <Switch>
+              <Route exact path="/" render={() => <Board />} />
           </Switch>
         </div>
       </Router>

@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Board.css";
-import { Grid, Row, Col, Panel, Button } from "react-bootstrap";
+import { Grid, Row, Col, Panel, Button, Label, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import firebase from "../../utils/firebase";
 
 class Board extends React.Component {
@@ -89,32 +89,44 @@ class Board extends React.Component {
                     <Col xs={10}>
                         <Panel bsClass="bg-white">
                             {!this.state.submitted ? (
-                                <form onSubmit={this.handleSubmit}>
-                                    <div className="form-group">
-                                        <label >Today's Date: {this.state.date}</label>
-                                        <br />
-
-                                        <label >Character IGN: </label>
-                                        <input type="text" className="form-control" name="poster" onChange={this.handleChange} required />
-
-                                        <label >Payout: </label>
-                                        <input type="number" className="form-control" name="payout" min="1" max="100000000" onChange={this.handleChange} required />
-
-                                        <label >Item: </label>
-                                        <input type="text" className="form-control" name="item" onChange={this.handleChange} required />
-
-                                        <label >Quantity: </label>
-                                        <input type="number" className="form-control" name="quantity" min="1" max="2000" onChange={this.handleChange} required />
-                                    </div>
-                                    <button
-                                        type="submit"
-                                        className="btn"
-                                        value="Submit"
-                                    >New Request</button>
-                                </form>
-
+                                <Panel>
+                                    <Panel.Body>
+                                        <form onSubmit={this.handleSubmit}>
+                                            <FormGroup>
+                                                <h3>
+                                                    Today's Date: {this.state.date}
+                                                </h3>
+                                                <InputGroup>
+                                                    <Label>Character IGN: </Label>
+                                                    <FormControl type="text" className="form-control" name="poster" size="20" placeholder="Mosjoandy" onChange={this.handleChange} required />
+                                                </InputGroup>
+                                                <InputGroup>
+                                                    <Label>Payout: </Label>
+                                                    <FormControl type="number" className="form-control" name="payout" min="1" max="100000000" size="9" placeholder="3550000" onChange={this.handleChange} required />
+                                                </InputGroup>
+                                                <InputGroup>
+                                                    <Label>Item: </Label>
+                                                    <FormControl type="text" className="form-control" name="item" size="20" placeholder="Strange Steel Piece" onChange={this.handleChange} required />
+                                                </InputGroup>
+                                                <InputGroup>
+                                                    <Label>Quantity: </Label>
+                                                    <FormControl type="number" className="form-control" name="quantity" min="1" max="4" size="4" placeholder="690" onChange={this.handleChange} required />
+                                                </InputGroup>
+                                            </FormGroup>
+                                            <Button
+                                                type="submit"
+                                                className="btn"
+                                                value="Submit"
+                                            >New Request</Button>
+                                        </form>
+                                    </Panel.Body>
+                                </Panel>
                             ) : (
-                                    <div className="text-center">Submitted</div>
+                                    <Panel>
+                                        <Panel.Body>
+                                            <p className="text-center">Submitted</p>
+                                        </Panel.Body>
+                                    </Panel>
                                 )}
                         </Panel>
                     </Col>
@@ -126,18 +138,14 @@ class Board extends React.Component {
                             <Panel bsStyle="success" key={huntingRequestList.id}>
                                 <Panel.Heading>
                                     <Panel.Title>
-                                        <Col xs={9}>
-                                            <div className="text-left">Hunting Request</div>
-                                        </Col>
-                                        <Col xs={3}>
-                                            <div className="text-right">Posted: {huntingRequestList.date}</div>
-                                        </Col>
+                                        <div className="text-left">Hunting Request: {huntingRequestList.item}</div>
                                     </Panel.Title>
                                 </Panel.Heading>
 
                                 <Panel.Body>
                                     <Row>
                                         <Col xs={6} className="text-left">
+                                            <p>Posted: {huntingRequestList.date}</p>
                                             <p>Poster: {huntingRequestList.poster}</p>
                                             <p>Fulfilled: {huntingRequestList.farmer}</p>
                                             <br />
@@ -146,26 +154,17 @@ class Board extends React.Component {
                                         <Col xs={6} className="text-right">
                                             <p>Item: {huntingRequestList.item}</p>
                                             <p>Quantity: {huntingRequestList.quantity}</p>
-                                            <br />
+                                            <br /><br />
                                             <p>Status: {huntingRequestList.status}</p>
                                         </Col>
                                     </Row>
-
-                                    <Row>
-                                        <Col xs={3} className="text-center">
-                                            <Button>Accept</Button>
-                                        </Col>
-                                        <Col xs={3} className="text-center">
-                                            <Button>Items Sent</Button>
-                                        </Col>
-                                        <Col xs={3} className="text-center">
-                                            <Button>Payment Sent</Button>
-                                        </Col>
-                                        <Col xs={3} className="text-center">
-                                            <Button>something</Button>
-                                        </Col>
-                                    </Row>
                                 </Panel.Body>
+                                <Panel.Footer>
+                                    <Button>Accept</Button>
+                                    <Button>Items Sent</Button>
+                                    <Button>Payment Sent</Button>
+                                    <Button>something</Button>
+                                </Panel.Footer>
                             </Panel>
 
                         )}
@@ -178,4 +177,18 @@ class Board extends React.Component {
 
 }
 
+// <Panel.Footer>
+// <Col xs={3} className="text-center">
+//     <Button>Accept</Button>
+// </Col>
+// <Col xs={3} className="text-center">
+//     <Button>Items Sent</Button>
+// </Col>
+// <Col xs={3} className="text-center">
+//     <Button>Payment Sent</Button>
+// </Col>
+// <Col xs={3} className="text-center">
+//     <Button>something</Button>
+// </Col>
+// </Panel.Footer>
 export default Board
