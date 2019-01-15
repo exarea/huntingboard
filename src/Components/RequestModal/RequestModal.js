@@ -18,7 +18,7 @@ class RequestModal extends React.Component {
             quantity: "",
             status: "",
             accepted: false,
-            itemSent: "",
+            itemSent: false,
             // finalized: "",
         };
         this.handleChange = this.handleChange.bind(this);
