@@ -12,6 +12,7 @@ class Board extends React.Component {
             huntingRequestList: [],
             submitted: false,
             date: new Date().toDateString(),
+            user: "",
             IGN: "",
             farmer: "",
             payout: "",
@@ -19,7 +20,7 @@ class Board extends React.Component {
             quantity: "",
             status: "",
             accepted: false,
-            // completed: "",
+            itemSent: "",
             // finalized: "",
         };
         this.acceptRequest = this.acceptRequest.bind(this);
@@ -29,7 +30,6 @@ class Board extends React.Component {
 
     componentDidMount() {
         const huntingRequest = firebase.database().ref('huntingRequest');
-
         huntingRequest.on('value', (snapshot) => {
             let huntingRequest = snapshot.val();
             let newState = [];
@@ -38,6 +38,7 @@ class Board extends React.Component {
                 newState.push({
                     id: info,
                     date: huntingRequest[info].date,
+                    user: huntingRequest[info].user,
                     poster: huntingRequest[info].poster,
                     farmer: huntingRequest[info].farmer,
                     payout: huntingRequest[info].payout,
@@ -45,7 +46,7 @@ class Board extends React.Component {
                     quantity: huntingRequest[info].quantity,
                     status: huntingRequest[info].status,
                     accepted: huntingRequest[info].accepted,
-                    // completed: huntingRequest[info].completed,
+                    itemSent: huntingRequest[info].itemSent,
                     // finalized: huntingRequest[info].finalized
                 });
             };
@@ -57,7 +58,6 @@ class Board extends React.Component {
 
     acceptRequest(huntingRequestList) {
         console.log("this is the id" + huntingRequestList)
-        // console.log(this.props.user)
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             farmer: this.props.user,
             accepted: true,
@@ -102,10 +102,18 @@ class Board extends React.Component {
                                     </Row>
                                 </Panel.Body>
                                 <Panel.Footer>
-                                    {huntingRequestList.accepted === true ?
+                                    {
+                                        huntingRequestList.user === this.props.user ?
                                         <Button disabled>Accept</Button>
                                         :
-                                        <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                        <span>
+                                            {
+                                                huntingRequestList.accepted === true ?
+                                                    <Button disabled>Accept</Button>
+                                                    :
+                                                    <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                            }
+                                        </span>
                                     }
                                     <Button>Items Sent</Button>
                                     <Button>Payment Sent</Button>

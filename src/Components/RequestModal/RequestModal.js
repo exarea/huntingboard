@@ -8,6 +8,7 @@ class RequestModal extends React.Component {
         super()
         this.state = {
             show: false,
+            user: "",
             submitted: false,
             date: new Date().toDateString(),
             IGN: "",
@@ -16,8 +17,8 @@ class RequestModal extends React.Component {
             item: "",
             quantity: "",
             status: "",
-            accepted: false
-            // completed: "",
+            accepted: false,
+            itemSent: "",
             // finalized: "",
         };
         this.handleChange = this.handleChange.bind(this);
@@ -45,10 +46,12 @@ class RequestModal extends React.Component {
         const huntingRequest = firebase.database().ref("huntingRequest");
         const info = {
             date: this.state.date,
+            user: this.props.user,
             poster: this.state.poster,
             farmer: "Open",
             payout: this.state.payout + "zeny",
             item: this.state.item,
+            itemSent: false,
             quantity: this.state.quantity,
             status: "Open",
             accepted: false
