@@ -50,7 +50,8 @@ class RequestModal extends React.Component {
             payout: this.state.payout + "zeny",
             item: this.state.item,
             quantity: this.state.quantity,
-            status: "Open"
+            status: "Open",
+            accepted: false
         };
         huntingRequest.push(info);
 

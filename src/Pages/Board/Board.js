@@ -49,33 +49,33 @@ class Board extends React.Component {
                     // finalized: huntingRequest[info].finalized
                 });
             };
-          console.log(newState)
+            // console.log(newState)
             this.setState({ huntingRequestList: newState });
-            
         });
-        
+
     };
 
-    acceptRequest() {
-        console.log(this.props.user)
-        firebase.database().ref("huntingRequest/").update({ 
+    acceptRequest(huntingRequestList) {
+        console.log("this is the id" + huntingRequestList)
+        // console.log(this.props.user)
+        firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             farmer: this.props.user,
-            accepted: true
+            accepted: true,
+            status: "In Progress"
         });
-        console.log(this.state.accepted)
-        // acceptButton() 
     };
 
-    // acceptButton() {
-    //     console.log()
+
+    // acceptButton(huntingRequestList) {
+    //     console.log("accept button"+huntingRequestList)
     // };
 
     render() {
         return (
             <Grid>
                 <Row className="show-grid">
-                    {this.state.huntingRequestList.map((huntingRequestList) =>
-                        <Col md={5} key={huntingRequestList.id}>
+                    {this.state.huntingRequestList.map((huntingRequestList, index) => (
+                        <Col md={5} key={index} id={huntingRequestList.id}>
                             <Panel bsStyle="success">
                                 <Panel.Heading>
                                     <Panel.Title>
@@ -95,20 +95,25 @@ class Board extends React.Component {
                                         <Col xs={6} className="text-right">
                                             <p>Item: {huntingRequestList.item}</p>
                                             <p>Quantity: {huntingRequestList.quantity}</p>
-                                            <br /><br />
+                                            <br />
+                                            <br />
                                             <p>Status: {huntingRequestList.status}</p>
                                         </Col>
                                     </Row>
                                 </Panel.Body>
-                                <Panel.Footer> 
-                                    <Button onClick={this.acceptRequest}>Accept</Button>
+                                <Panel.Footer>
+                                    {huntingRequestList.accepted === true ?
+                                        <Button disabled>Accept</Button>
+                                        :
+                                        <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                    }
                                     <Button>Items Sent</Button>
                                     <Button>Payment Sent</Button>
                                     <Button>something</Button>
                                 </Panel.Footer>
                             </Panel>
                         </Col>
-                    )}
+                    ))}
                 </Row>
             </Grid>
         );
