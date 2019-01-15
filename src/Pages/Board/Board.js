@@ -23,6 +23,8 @@ class Board extends React.Component {
             // finalized: "",
         };
         this.acceptRequest = this.acceptRequest.bind(this);
+        // this.acceptButton = this.acceptButton.bind(this);
+
     };
 
     componentDidMount() {
@@ -47,18 +49,26 @@ class Board extends React.Component {
                     // finalized: huntingRequest[info].finalized
                 });
             };
-          
+          console.log(newState)
             this.setState({ huntingRequestList: newState });
+            
         });
+        
     };
 
     acceptRequest() {
         console.log(this.props.user)
-        firebase.database().ref("huntingRequest/Nicholas Chan").update({ 
+        firebase.database().ref("huntingRequest/").update({ 
             farmer: this.props.user,
             accepted: true
         });
+        console.log(this.state.accepted)
+        // acceptButton() 
     };
+
+    // acceptButton() {
+    //     console.log()
+    // };
 
     render() {
         return (
@@ -90,7 +100,7 @@ class Board extends React.Component {
                                         </Col>
                                     </Row>
                                 </Panel.Body>
-                                <Panel.Footer>
+                                <Panel.Footer> 
                                     <Button onClick={this.acceptRequest}>Accept</Button>
                                     <Button>Items Sent</Button>
                                     <Button>Payment Sent</Button>

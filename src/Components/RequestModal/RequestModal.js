@@ -42,16 +42,17 @@ class RequestModal extends React.Component {
         // console.log("quantity: " + this.state.quantity);
         // console.log("status: " + this.state.status);
 
-        firebase.database().ref("huntingRequest/" + this.props.user).set({
+        const huntingRequest = firebase.database().ref("huntingRequest");
+        const info = {
             date: this.state.date,
             poster: this.state.poster,
             farmer: "Open",
             payout: this.state.payout + "zeny",
             item: this.state.item,
             quantity: this.state.quantity,
-            status: "Open",
-            accepted: false
-        });
+            status: "Open"
+        };
+        huntingRequest.push(info);
 
         this.setState({ submitted: true });
         event.target.reset();
@@ -70,6 +71,7 @@ class RequestModal extends React.Component {
             <Grid>
                 <Row className="show-grid">
                     <Col xs={10}>
+
                         <Panel>
                             <Panel.Heading>
                                 Making a new hunting request
@@ -141,6 +143,7 @@ class RequestModal extends React.Component {
                                         </InputGroup>
 
                                     </FormGroup>
+
                                     <Button
                                         type="submit"
                                         value="Submit"
@@ -148,9 +151,11 @@ class RequestModal extends React.Component {
                                     >New Request</Button>
                                 </form>
                             </Modal.Body>
+
                             <Modal.Footer>
                                 <Button onClick={this.handleClose}>Close</Button>
                             </Modal.Footer>
+
                         </Modal>
                     </Col>
                 </Row>
