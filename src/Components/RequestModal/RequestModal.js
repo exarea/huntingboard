@@ -52,7 +52,7 @@ class RequestModal extends React.Component {
             user: this.props.user,
             poster: this.state.poster,
             farmer: "Open",
-            payout: this.state.payout + "zeny",
+            payout: this.state.payout + " zeny",
             item: this.state.item,
             itemSent: false,
             quantity: this.state.quantity,
@@ -80,7 +80,7 @@ class RequestModal extends React.Component {
         return (
             <Grid>
                 <Row className="show-grid">
-                    <Col xs={10}>
+                    <Col xs={9}>
 
                         <Panel>
                             <Panel.Heading>
@@ -133,7 +133,7 @@ class RequestModal extends React.Component {
                                                 type="text"
                                                 className="form-control"
                                                 name="item"
-                                                maxLength="20"
+                                                maxLength="23"
                                                 placeholder="Strange Steel Piece"
                                                 onChange={this.handleChange} required
                                                 autoComplete="off"
@@ -144,7 +144,7 @@ class RequestModal extends React.Component {
                                                 ))}
                                             </datalist>
                                         </InputGroup>
-
+                                    
                                         <InputGroup>
                                             <Label>Quantity: </Label>
                                             <FormControl

@@ -3,7 +3,6 @@ import "./Board.css";
 import { Grid, Row, Col, Panel, Button } from "react-bootstrap";
 import firebase from "../../utils/firebase";
 import itemList from "../../data/itemList.json"
-// import RequestModal from "../../Components/RequestModal/RequestModal"
 
 class Board extends React.Component {
 
@@ -92,48 +91,52 @@ class Board extends React.Component {
             <Grid>
                 <Row className="show-grid">
                     {this.state.huntingRequestList.map((huntingRequestList, index) => (
-                        <Col md={5} key={index} id={huntingRequestList.id}>
-                            <Panel bsStyle={this.state.huntingRequestList.statusColor}>
+                        <Col md={3} key={index} id={huntingRequestList.id}>
+                            <Panel bsStyle={huntingRequestList.statusColor}>
                                 <Panel.Heading>
                                     <Panel.Title>
-                                        <div className="text-left">Hunting Request: {huntingRequestList.item}</div>
+                                        <div className="text-left">{huntingRequestList.item}</div>
                                     </Panel.Title>
                                 </Panel.Heading>
 
                                 <Panel.Body>
                                     <Row>
+                                        <Col xs={12}>
+                                            <p className="text-center">{huntingRequestList.date}</p>
+                                            <p className="text-center">{huntingRequestList.status}</p>
+                                        </Col>
+                                    </Row>
+                                    <Row>
                                         <Col xs={6} className="text-left">
-                                            <p>Posted: {huntingRequestList.date}</p>
-                                            <p>Poster: {huntingRequestList.poster}</p>
-                                            <p>Fulfilled: {huntingRequestList.farmer}</p>
-                                            <br />
-                                            <p>Payout: {huntingRequestList.payout}</p>
+                                            <p>Payee:<br />{huntingRequestList.poster}</p>
                                         </Col>
                                         <Col xs={6} className="text-right">
-                                            <p>Item: {huntingRequestList.item}
+                                            <p>Accepted By:<br />{huntingRequestList.farmer}</p>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col xs={12}>
+                                            <p className="text-center">Item: {huntingRequestList.item}</p>
 
-                                                {/* {this.state.itemList.map((itemList, index) => (
-                                                
+                                            {/* {this.state.itemList.map((itemList, index) => (
+
                                                 <img src={itemList.image} key={index} alt="item" />
+                                                ))} */}
 
-                                            ))} */}
-                                            </p>
-                                            <p>Quantity: {huntingRequestList.quantity}</p>
-                                            <br />
-                                            <br />
-                                            <p>Status: {huntingRequestList.status}</p>
+                                            <p className="text-center">Quantity: {huntingRequestList.quantity}</p>
+                                            <p className="text-center">Payout: {huntingRequestList.payout}</p>
                                         </Col>
                                     </Row>
                                 </Panel.Body>
-                                <Panel.Footer>
+                                <Panel.Footer className="text-center">
                                     {
                                         huntingRequestList.user === this.props.user ?
-                                            <Button disabled>Accept</Button>
+                                            <span></span>
                                             :
                                             <span>
                                                 {
                                                     huntingRequestList.accepted === true ?
-                                                        <Button disabled>Accept</Button>
+                                                        <Button disabled>Accepted</Button>
                                                         :
                                                         <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
                                                 }
@@ -142,7 +145,7 @@ class Board extends React.Component {
 
                                     {
                                         huntingRequestList.user === this.props.user ?
-                                            <Button disabled>Items Sent</Button>
+                                            <span></span>
                                             :
                                             <span>
                                                 {
@@ -156,20 +159,19 @@ class Board extends React.Component {
                                     }
 
                                     {
-                                        huntingRequestList.payoutSent === false ?
+                                        huntingRequestList.payoutSent === false && huntingRequestList.user === this.props.user ?
                                             <span>
                                                 {
 
                                                     huntingRequestList.user === this.props.user && huntingRequestList.itemSent === true ?
-                                                        <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Payment Sent</Button>
+                                                        <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
                                                         :
                                                         <Button disabled>Payment Sent</Button>
                                                 }
                                             </span>
                                             :
-                                            <Button disabled>Payment Sent</Button>
+                                            <span></span>
                                     }
-
 
                                     {/* <Button>something</Button> */}
                                 </Panel.Footer>
