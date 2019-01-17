@@ -2,6 +2,7 @@ import React from 'react';
 import "./Board.css";
 import { Grid, Row, Col, Panel, Button } from "react-bootstrap";
 import firebase from "../../utils/firebase";
+import itemList from "../../data/itemList.json"
 // import RequestModal from "../../Components/RequestModal/RequestModal"
 
 class Board extends React.Component {
@@ -9,6 +10,7 @@ class Board extends React.Component {
     constructor() {
         super()
         this.state = {
+            itemList: itemList,
             huntingRequestList: [],
             submitted: false,
             date: new Date().toDateString(),

@@ -2,11 +2,13 @@ import React from 'react';
 import "./RequestModal.css";
 import { Grid, Modal, Row, Col, Panel, Button, Label, FormGroup, InputGroup, FormControl } from "react-bootstrap";
 import firebase from "../../utils/firebase";
+import itemList from "../../data/itemList.json"
 
 class RequestModal extends React.Component {
     constructor() {
         super()
         this.state = {
+            itemList: itemList,
             show: false,
             user: "",
             submitted: false,
@@ -70,6 +72,7 @@ class RequestModal extends React.Component {
         this.setState({ show: true });
     };
 
+
     render() {
         return (
             <Grid>
@@ -123,13 +126,20 @@ class RequestModal extends React.Component {
                                         <InputGroup>
                                             <Label>Item: </Label>
                                             <FormControl
+                                                list="itemList"
                                                 type="text"
                                                 className="form-control"
                                                 name="item"
                                                 maxLength="20"
                                                 placeholder="Strange Steel Piece"
                                                 onChange={this.handleChange} required
+                                                autoComplete="off"
                                             />
+                                            <datalist id="itemList">
+                                                {this.state.itemList.map((itemList, index) => (
+                                                    <option key={index} value={itemList.value} />
+                                                ))}
+                                            </datalist>
                                         </InputGroup>
 
                                         <InputGroup>
