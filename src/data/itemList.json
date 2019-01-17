@@ -1,11 +1,13 @@
 [
     {
         "value": "Glacial Heart",
-        "image": "https://panel.talonro.com/images/items/small/7561.gif"
+        "image": "https://panel.talonro.com/images/items/small/7561.gif",
+        "link": "https://panel.talonro.com/itemdb/7561/"
     },
     {
         "value": "Fang",
-        "image": "https://panel.talonro.com/images/items/small/1063.gif"
+        "image": "https://panel.talonro.com/images/items/small/1063.gif",
+        "link": "https://panel.talonro.com/itemdb/1063/"
     }
 ]
   

@@ -19,9 +19,10 @@ class RequestModal extends React.Component {
             item: "",
             quantity: "",
             status: "",
+            statusColor: "",
             accepted: false,
             itemSent: false,
-            // finalized: "",
+            payoutSent: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,7 +57,9 @@ class RequestModal extends React.Component {
             itemSent: false,
             quantity: this.state.quantity,
             status: "Open",
-            accepted: false
+            statusColor: "success",
+            accepted: false,
+            payoutSent: false
         };
         huntingRequest.push(info);
 

@@ -21,9 +21,10 @@ class Board extends React.Component {
             item: "",
             quantity: "",
             status: "",
+            statusColor: "",
             accepted: false,
             itemSent: "",
-            // finalized: "",
+            payoutSent: "",
         };
         this.acceptRequest = this.acceptRequest.bind(this);
         this.itemSent = this.itemSent.bind(this);
@@ -49,7 +50,8 @@ class Board extends React.Component {
                     status: huntingRequest[info].status,
                     accepted: huntingRequest[info].accepted,
                     itemSent: huntingRequest[info].itemSent,
-                    // finalized: huntingRequest[info].finalized
+                    payoutSent: huntingRequest[info].payoutSent,
+                    statusColor: huntingRequest[info].statusColor
                 });
             };
             // console.log(newState)
@@ -59,27 +61,31 @@ class Board extends React.Component {
     };
 
     acceptRequest(huntingRequestList) {
-        console.log("this is the id" + huntingRequestList)
+        console.log("this is the id" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             farmer: this.props.user,
             accepted: true,
-            status: "In Progress"
+            status: "In Progress",
+            statusColor: "warning"
         });
     };
 
     itemSent(huntingRequestList) {
-        console.log("this is the id" + huntingRequestList)
+        console.log("this is the id" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             itemSent: true,
             status: "Items Sent"
         });
     };
 
-
-
-    // acceptButton(huntingRequestList) {
-    //     console.log("accept button"+huntingRequestList)
-    // };
+    payoutSent(huntingRequestList) {
+        console.log("this is the id" + huntingRequestList);
+        firebase.database().ref("huntingRequest/" + huntingRequestList).update({
+            payoutSent: true,
+            status: "Complete",
+            statusColor: "primary"
+        });
+    };
 
     render() {
         return (
@@ -87,7 +93,7 @@ class Board extends React.Component {
                 <Row className="show-grid">
                     {this.state.huntingRequestList.map((huntingRequestList, index) => (
                         <Col md={5} key={index} id={huntingRequestList.id}>
-                            <Panel bsStyle="success">
+                            <Panel bsStyle={this.state.huntingRequestList.statusColor}>
                                 <Panel.Heading>
                                     <Panel.Title>
                                         <div className="text-left">Hunting Request: {huntingRequestList.item}</div>
@@ -104,7 +110,14 @@ class Board extends React.Component {
                                             <p>Payout: {huntingRequestList.payout}</p>
                                         </Col>
                                         <Col xs={6} className="text-right">
-                                            <p>Item: {huntingRequestList.item}</p>
+                                            <p>Item: {huntingRequestList.item}
+
+                                                {/* {this.state.itemList.map((itemList, index) => (
+                                                
+                                                <img src={itemList.image} key={index} alt="item" />
+
+                                            ))} */}
+                                            </p>
                                             <p>Quantity: {huntingRequestList.quantity}</p>
                                             <br />
                                             <br />
@@ -142,8 +155,23 @@ class Board extends React.Component {
 
                                     }
 
-                                    {/* <Button>Payment Sent</Button>
-                                    <Button>something</Button> */}
+                                    {
+                                        huntingRequestList.payoutSent === false ?
+                                            <span>
+                                                {
+
+                                                    huntingRequestList.user === this.props.user && huntingRequestList.itemSent === true ?
+                                                        <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Payment Sent</Button>
+                                                        :
+                                                        <Button disabled>Payment Sent</Button>
+                                                }
+                                            </span>
+                                            :
+                                            <Button disabled>Payment Sent</Button>
+                                    }
+
+
+                                    {/* <Button>something</Button> */}
                                 </Panel.Footer>
                             </Panel>
                         </Col>
