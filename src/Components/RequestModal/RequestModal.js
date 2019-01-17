@@ -9,6 +9,8 @@ class RequestModal extends React.Component {
         super()
         this.state = {
             itemList: itemList,
+            itemImage: "",
+            itemLink: "",
             show: false,
             user: "",
             submitted: false,
@@ -46,6 +48,15 @@ class RequestModal extends React.Component {
         // console.log("quantity: " + this.state.quantity);
         // console.log("status: " + this.state.status);
 
+        for (var i = 0; i < itemList.length; i++) {
+
+            if (this.state.item === itemList[i].value) {
+                // console.log("item found inside the loop - it is: " + itemList[i].image)
+                var itemImage = itemList[i].image
+                var itemLink = itemList[i].link
+            };
+        };
+
         const huntingRequest = firebase.database().ref("huntingRequest");
         const info = {
             date: this.state.date,
@@ -54,6 +65,8 @@ class RequestModal extends React.Component {
             farmer: "Open",
             payout: this.state.payout + " zeny",
             item: this.state.item,
+            itemImage: itemImage,
+            itemLink: itemLink,
             itemSent: false,
             quantity: this.state.quantity,
             status: "Open",
@@ -144,7 +157,7 @@ class RequestModal extends React.Component {
                                                 ))}
                                             </datalist>
                                         </InputGroup>
-                                    
+
                                         <InputGroup>
                                             <Label>Quantity: </Label>
                                             <FormControl

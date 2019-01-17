@@ -10,6 +10,8 @@ class Board extends React.Component {
         super()
         this.state = {
             itemList: itemList,
+            itemImage: "",
+            itemLink: "",
             huntingRequestList: [],
             submitted: false,
             date: new Date().toDateString(),
@@ -45,6 +47,8 @@ class Board extends React.Component {
                     farmer: huntingRequest[info].farmer,
                     payout: huntingRequest[info].payout,
                     item: huntingRequest[info].item,
+                    itemImage: huntingRequest[info].itemImage,
+                    itemLink: huntingRequest[info].itemLink,
                     quantity: huntingRequest[info].quantity,
                     status: huntingRequest[info].status,
                     accepted: huntingRequest[info].accepted,
@@ -88,96 +92,96 @@ class Board extends React.Component {
 
     render() {
         return (
-            <Grid>
+            <Grid style={{fontSize: 15}}>
                 <Row className="show-grid">
-                    {this.state.huntingRequestList.map((huntingRequestList, index) => (
-                        <Col md={3} key={index} id={huntingRequestList.id}>
-                            <Panel bsStyle={huntingRequestList.statusColor}>
-                                <Panel.Heading>
-                                    <Panel.Title>
-                                        <div className="text-left">{huntingRequestList.item}</div>
-                                    </Panel.Title>
-                                </Panel.Heading>
+                    <Col md={9}>
+                        {this.state.huntingRequestList.map((huntingRequestList, index) => (
+                            <Col md={4} key={index} id={huntingRequestList.id}>
+                                <Panel bsStyle={(huntingRequestList.statusColor)}>
+                                    <Panel.Heading>
+                                        <Panel.Title>
+                                            <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}{huntingRequestList.item}
+                                        </Panel.Title>
+                                    </Panel.Heading>
 
-                                <Panel.Body>
-                                    <Row>
-                                        <Col xs={12}>
-                                            <p className="text-center">{huntingRequestList.date}</p>
-                                            <p className="text-center">{huntingRequestList.status}</p>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col xs={6} className="text-left">
-                                            <p>Payee:<br />{huntingRequestList.poster}</p>
-                                        </Col>
-                                        <Col xs={6} className="text-right">
-                                            <p>Accepted By:<br />{huntingRequestList.farmer}</p>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col xs={12}>
-                                            <p className="text-center">Item: {huntingRequestList.item}</p>
+                                    <Panel.Body style={{ height: 300 }}>
+                                        <Row>
+                                            <Col xs={12}>
+                                                <p className="text-center">{huntingRequestList.date}</p>
+                                                <h4 className="text-center">{huntingRequestList.status}</h4>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col xs={6} className="text-left">
+                                                <p>Payee:<br /><b>{huntingRequestList.poster}</b></p>
+                                            </Col>
+                                            <Col xs={6} className="text-right">
+                                                <p>Accepted By:<br /><b>{huntingRequestList.farmer}</b></p>
+                                            </Col>
+                                        </Row>
+                                        <br />
+                                        <Row>
+                                            <Col xs={12}>
+                                                <p className="text-center">Item:{" "}
+                                                <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}
+                                                    <a href={huntingRequestList.itemLink}>{huntingRequestList.item}</a>
+                                                </p>
+                                                <p className="text-center">Quantity: <b>{huntingRequestList.quantity}</b></p>
+                                                <p className="text-center">Payout: <b>{huntingRequestList.payout}</b></p>
+                                            </Col>
+                                        </Row>
+                                    </Panel.Body>
+                                    <Panel.Footer className="text-center">
+                                        {
+                                            huntingRequestList.user === this.props.user ?
+                                                <span></span>
+                                                :
+                                                <span>
+                                                    {
+                                                        huntingRequestList.accepted === true ?
+                                                            <Button disabled>Accepted</Button>
+                                                            :
+                                                            <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                                    }
+                                                </span>
+                                        }
+                                        <span> </span>
+                                        {
+                                            huntingRequestList.user === this.props.user ?
+                                                <span></span>
+                                                :
+                                                <span>
+                                                    {
+                                                        huntingRequestList.farmer === this.props.user && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
+                                                            <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
+                                                            :
+                                                            <Button disabled>Items Sent</Button>
+                                                    }
+                                                </span>
 
-                                            {/* {this.state.itemList.map((itemList, index) => (
+                                        }
+                                        <span> </span>
+                                        {
+                                            huntingRequestList.payoutSent === false && huntingRequestList.user === this.props.user ?
+                                                <span>
+                                                    {
 
-                                                <img src={itemList.image} key={index} alt="item" />
-                                                ))} */}
+                                                        huntingRequestList.user === this.props.user && huntingRequestList.itemSent === true ?
+                                                            <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
+                                                            :
+                                                            <Button disabled>Payment Sent</Button>
+                                                    }
+                                                </span>
+                                                :
+                                                <span></span>
+                                        }
 
-                                            <p className="text-center">Quantity: {huntingRequestList.quantity}</p>
-                                            <p className="text-center">Payout: {huntingRequestList.payout}</p>
-                                        </Col>
-                                    </Row>
-                                </Panel.Body>
-                                <Panel.Footer className="text-center">
-                                    {
-                                        huntingRequestList.user === this.props.user ?
-                                            <span></span>
-                                            :
-                                            <span>
-                                                {
-                                                    huntingRequestList.accepted === true ?
-                                                        <Button disabled>Accepted</Button>
-                                                        :
-                                                        <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
-                                                }
-                                            </span>
-                                    }
-
-                                    {
-                                        huntingRequestList.user === this.props.user ?
-                                            <span></span>
-                                            :
-                                            <span>
-                                                {
-                                                    huntingRequestList.farmer === this.props.user && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
-                                                        <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
-                                                        :
-                                                        <Button disabled>Items Sent</Button>
-                                                }
-                                            </span>
-
-                                    }
-
-                                    {
-                                        huntingRequestList.payoutSent === false && huntingRequestList.user === this.props.user ?
-                                            <span>
-                                                {
-
-                                                    huntingRequestList.user === this.props.user && huntingRequestList.itemSent === true ?
-                                                        <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
-                                                        :
-                                                        <Button disabled>Payment Sent</Button>
-                                                }
-                                            </span>
-                                            :
-                                            <span></span>
-                                    }
-
-                                    {/* <Button>something</Button> */}
-                                </Panel.Footer>
-                            </Panel>
-                        </Col>
-                    ))}
+                                        {/* <Button>something</Button> */}
+                                    </Panel.Footer>
+                                </Panel>
+                            </Col>
+                        ))}
+                    </Col>
                 </Row>
             </Grid>
         );
