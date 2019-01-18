@@ -15,7 +15,7 @@ class RequestModal extends React.Component {
             user: "",
             submitted: false,
             date: new Date().toDateString(),
-            IGN: "",
+            poster: "",
             farmer: "",
             payout: "",
             item: "",
@@ -76,16 +76,23 @@ class RequestModal extends React.Component {
         };
         huntingRequest.push(info);
 
-        this.setState({ submitted: true });
+        this.setState({
+            submitted: true
+        });
         event.target.reset();
     };
 
     handleClose() {
-        this.setState({ show: false });
+        this.setState({
+            show: false,
+            submitted: false
+        });
     };
 
     handleShow() {
-        this.setState({ show: true });
+        this.setState({
+            show: true
+        });
     };
 
 
@@ -108,80 +115,121 @@ class RequestModal extends React.Component {
                         </Panel>
 
                         <Modal show={this.state.show} onHide={this.handleClose}>
-                            <Modal.Body>
-                                <form onSubmit={this.handleSubmit}>
-                                    <FormGroup>
-                                        <h3>
-                                            Date: {this.state.date}
-                                        </h3>
-                                        <InputGroup>
-                                            <Label>Character IGN: </Label>
-                                            <FormControl
-                                                type="text"
-                                                className="form-control"
-                                                name="poster"
-                                                maxLength="24"
-                                                placeholder="Mosjoandy"
-                                                onChange={this.handleChange} required
-                                            />
-                                        </InputGroup>
+                            {this.state.submitted === false ?
+                                <Modal.Body>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <FormGroup>
+                                            <h3>
+                                                Date: {this.state.date}
+                                            </h3>
+                                            <InputGroup>
+                                                <Label>Character IGN: </Label>
+                                                <FormControl
+                                                    type="text"
+                                                    className="form-control"
+                                                    name="poster"
+                                                    maxLength="24"
+                                                    placeholder="Mosjoandy"
+                                                    onChange={this.handleChange}
+                                                    required
+                                                />
+                                            </InputGroup>
+                                            <p className="text-muted">Please spell your IGN correctly</p>
+                                            <InputGroup>
+                                                <Label>Payout: </Label>
+                                                <FormControl
+                                                    type="text"
+                                                    className="form-control"
+                                                    name="payout"
+                                                    placeholder="3,550,000"
+                                                    onChange={this.handleChange}
+                                                    required
+                                                    pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$"
+                                                />
+                                            </InputGroup>
+                                            <p className="text-muted">e.g.: 4,500,000 or 750,000</p>
+                                            <InputGroup>
+                                                <Label>Item: </Label><br />
+                                                <select
+                                                    className="form-control"
+                                                    name="item"
+                                                    onChange={this.handleChange}
+                                                    required
+                                                >
+                                                    {this.state.itemList.map((itemList, index) => (
+                                                        <option key={index} value={itemList.value}>{itemList.value}</option>
+                                                    ))}
+                                                </select>
+                                            </InputGroup>
+                                            <p className="text-muted">e.g.: Strange Steel Piece</p>
+                                            <InputGroup>
+                                                <Label>Quantity: </Label>
+                                                <FormControl
+                                                    type="text"
+                                                    className="form-control"
+                                                    name="quantity"
+                                                    maxLength="4"
+                                                    placeholder="1200"
+                                                    onChange={this.handleChange}
+                                                    required
+                                                    pattern="[0-9]{1,4}"
+                                                />
+                                            </InputGroup>
+                                            <p className="text-muted">e.g.: 1400</p>
+                                        </FormGroup>
 
-                                        <InputGroup>
-                                            <Label>Payout: </Label>
-                                            <FormControl
-                                                type="number"
-                                                className="form-control"
-                                                name="payout"
-                                                min="1"
-                                                max="100000000"
-                                                placeholder="3550000"
-                                                onChange={this.handleChange} required
-                                            />
-                                        </InputGroup>
+                                        <Button
+                                            type="submit"
+                                            value="Submit"
+                                        >New Request</Button>
+                                    </form>
+                                </Modal.Body>
+                                :
+                                <Modal.Body>
+                                    <form onSubmit={this.handleSubmit}>
+                                        <FormGroup>
+                                            <h3>
+                                                Date: {this.state.date}
+                                            </h3>
+                                            <InputGroup>
+                                                <Label>Character IGN: </Label>
+                                                <FormControl
+                                                    placeholder={this.state.poster}
+                                                    disabled
+                                                />
+                                            </InputGroup>
 
-                                        <InputGroup>
-                                            <Label>Item: </Label>
-                                            <FormControl
-                                                list="itemList"
-                                                type="text"
-                                                className="form-control"
-                                                name="item"
-                                                maxLength="23"
-                                                placeholder="Strange Steel Piece"
-                                                onChange={this.handleChange} required
-                                                autoComplete="off"
-                                            />
-                                            <datalist id="itemList">
-                                                {this.state.itemList.map((itemList, index) => (
-                                                    <option key={index} value={itemList.value} />
-                                                ))}
-                                            </datalist>
-                                        </InputGroup>
+                                            <InputGroup>
+                                                <Label>Payout: </Label>
+                                                <FormControl
+                                                    placeholder={this.state.payout}
+                                                    disabled
+                                                />
+                                            </InputGroup>
 
-                                        <InputGroup>
-                                            <Label>Quantity: </Label>
-                                            <FormControl
-                                                type="number"
-                                                className="form-control"
-                                                name="quantity"
-                                                min="1"
-                                                max="2000"
-                                                maxLength="4"
-                                                placeholder="690"
-                                                onChange={this.handleChange} required
-                                            />
-                                        </InputGroup>
+                                            <InputGroup>
+                                                <Label>Item: </Label>
+                                                <FormControl
+                                                    placeholder={this.state.item}
+                                                    disabled
+                                                />
+                                            </InputGroup>
 
-                                    </FormGroup>
-
-                                    <Button
-                                        type="submit"
-                                        value="Submit"
-                                        onClick={this.handleClose}
-                                    >New Request</Button>
-                                </form>
-                            </Modal.Body>
-
+                                            <InputGroup>
+                                                <Label>Quantity: </Label>
+                                                <FormControl
+                                                    placeholder={this.state.quantity}
+                                                    disabled
+                                                />
+                                            </InputGroup>
+                                        </FormGroup>
+                                        <Button
+                                            bsStyle="success"
+                                            disabled
+                                        >Submitted</Button>
+                                    </form>
+                                </Modal.Body>
+                            }
                             <Modal.Footer>
                                 <Button onClick={this.handleClose}>Close</Button>
                             </Modal.Footer>

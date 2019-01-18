@@ -92,7 +92,7 @@ class Board extends React.Component {
 
     render() {
         return (
-            <Grid style={{fontSize: 15}}>
+            <Grid style={{ fontSize: 15 }}>
                 <Row className="show-grid">
                     <Col md={9}>
                         {this.state.huntingRequestList.map((huntingRequestList, index) => (
@@ -106,9 +106,11 @@ class Board extends React.Component {
 
                                     <Panel.Body style={{ height: 300 }}>
                                         <Row>
-                                            <Col xs={12}>
-                                                <p className="text-center">{huntingRequestList.date}</p>
-                                                <h4 className="text-center">{huntingRequestList.status}</h4>
+                                            <Col xs={12} className="text-center">
+                                                <div>
+                                                    <p>{huntingRequestList.date}</p>
+                                                    <h4>{huntingRequestList.status}</h4>
+                                                </div>
                                             </Col>
                                         </Row>
                                         <Row>
@@ -121,13 +123,13 @@ class Board extends React.Component {
                                         </Row>
                                         <br />
                                         <Row>
-                                            <Col xs={12}>
-                                                <p className="text-center">Item:{" "}
-                                                <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}
+                                            <Col xs={12} className="text-center">
+                                                <p>Item:{" "}
+                                                    <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}
                                                     <a href={huntingRequestList.itemLink}>{huntingRequestList.item}</a>
                                                 </p>
-                                                <p className="text-center">Quantity: <b>{huntingRequestList.quantity}</b></p>
-                                                <p className="text-center">Payout: <b>{huntingRequestList.payout}</b></p>
+                                                <p>Quantity: <b>{huntingRequestList.quantity}</b></p>
+                                                <p>Payout: <b>{huntingRequestList.payout}</b></p>
                                             </Col>
                                         </Row>
                                     </Panel.Body>
@@ -175,8 +177,6 @@ class Board extends React.Component {
                                                 :
                                                 <span></span>
                                         }
-
-                                        {/* <Button>something</Button> */}
                                     </Panel.Footer>
                                 </Panel>
                             </Col>
