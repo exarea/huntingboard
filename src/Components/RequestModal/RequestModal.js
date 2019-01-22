@@ -48,16 +48,20 @@ class RequestModal extends React.Component {
         // console.log("quantity: " + this.state.quantity);
         // console.log("status: " + this.state.status);
 
+        // Run forloop to go through itemList json
         for (var i = 0; i < itemList.length; i++) {
-
+            // if the item user is trying to create exists in the json, pull data
             if (this.state.item === itemList[i].value) {
                 // console.log("item found inside the loop - it is: " + itemList[i].image)
+                // Set items found to new variables
                 var itemImage = itemList[i].image
                 var itemLink = itemList[i].link
             };
         };
 
+        // Make reference to firebase huntingRequest and make new object
         const huntingRequest = firebase.database().ref("huntingRequest");
+        // Data submitted by the user
         const info = {
             date: this.state.date,
             user: this.props.user,
@@ -65,6 +69,7 @@ class RequestModal extends React.Component {
             farmer: "Open",
             payout: this.state.payout + " zeny",
             item: this.state.item,
+            // item from forloop accessing itemList json shown here
             itemImage: itemImage,
             itemLink: itemLink,
             itemSent: false,
@@ -74,15 +79,19 @@ class RequestModal extends React.Component {
             accepted: false,
             payoutSent: false
         };
+        // Push new object to firebase
         huntingRequest.push(info);
 
+        // Change state of submission
         this.setState({
             submitted: true
         });
+        // Reset form
         event.target.reset();
     };
 
     handleClose() {
+        // Modal close function
         this.setState({
             show: false,
             submitted: false
@@ -90,6 +99,7 @@ class RequestModal extends React.Component {
     };
 
     handleShow() {
+         // Modal show function
         this.setState({
             show: true
         });
@@ -97,6 +107,7 @@ class RequestModal extends React.Component {
 
 
     render() {
+        // Popover data in modal form
         const IGNPopOver = (
             <Popover id="popover-trigger-hover-focus" title="Character IGN">
                 Spell your name <strong>exactly</strong> as it is In-Game. This will ensure a farmer will send the items to the proper character.
@@ -139,7 +150,8 @@ class RequestModal extends React.Component {
                         </Panel>
 
                         <Modal show={this.state.show} onHide={this.handleClose}>
-                            {this.state.submitted === false ?
+                            {/* if submission is false, show forms with fields that can be filled out */
+                                this.state.submitted === false ?
                                 <Modal.Body>
                                     <Form onSubmit={this.handleSubmit} inline>
                                         <FormGroup>
@@ -241,6 +253,7 @@ class RequestModal extends React.Component {
                                     </Form>
                                 </Modal.Body>
                                 :
+                                // if form is filled out and submission is true, show the data the user submitted in disabled form
                                 <Modal.Body>
                                     <form onSubmit={this.handleSubmit}>
                                         <FormGroup>
@@ -286,6 +299,7 @@ class RequestModal extends React.Component {
                                     </form>
                                 </Modal.Body>
                             }
+                            {/* Button for submission */}
                             <Modal.Footer>
                                 <Button onClick={this.handleClose}>Close</Button>
                             </Modal.Footer>
