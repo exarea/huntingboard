@@ -25,22 +25,22 @@ class App extends Component {
 
   logout() {
     auth.signOut().then(() => {
-        this.setState({ user: null });
-        this.setState({ userExists: false })
-        this.setState({ userID: "" });
-        this.setState({ userPhoto: "" });
-      });
+      this.setState({ user: null });
+      this.setState({ userExists: false })
+      this.setState({ userID: "" });
+      this.setState({ userPhoto: "" });
+    });
   };
 
   login() {
     auth.signInWithPopup(provider).then((result) => {
-        console.log(result.user);
-        var user = result.user;
-        this.setState({ user: user.displayName });
-        this.setState({ userExists: true })
-        this.setState({ userID: user.uid });
-        this.setState({ userPhoto: user.photoURL });
-      });
+      console.log(result.user);
+      var user = result.user;
+      this.setState({ user: user.displayName });
+      this.setState({ userExists: true })
+      this.setState({ userID: user.uid });
+      this.setState({ userPhoto: user.photoURL });
+    });
   };
 
   render() {
@@ -54,21 +54,24 @@ class App extends Component {
               <Button bsStyle="primary" onClick={this.login}>Login</Button>
             }
           </Nav>
-          {/* <Switch>
+          <Switch>
             {this.state.userExists === true ?
-              <Route exact path="/" render={() => <Board />} />
+              <Grid>
+                <RequestModal user={this.state.user} />
+                <Board user={this.state.user} />
+              </Grid>
               :
               <Route exact path="/" render={() => <Button bsStyle="primary" onClick={this.login}>Login</Button>} />
             }
-          </Switch> */}
-          <Switch>
+          </Switch>
+          {/* <Switch>
             <Route exact path="/" render={() =>
               <Grid>
                 <RequestModal user={this.state.user}/>
                 <Board user={this.state.user}/>
               </Grid>
             } />
-          </Switch>
+          </Switch> */}
         </div>
       </Router>
     );

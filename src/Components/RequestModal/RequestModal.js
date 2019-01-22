@@ -1,6 +1,6 @@
 import React from 'react';
 import "./RequestModal.css";
-import { Grid, Modal, Row, Col, Panel, Button, Label, FormGroup, InputGroup, FormControl } from "react-bootstrap";
+import { Grid, Modal, Row, Col, Panel, Button, Label, FormGroup, InputGroup, Form, FormControl, Glyphicon, Popover, OverlayTrigger } from "react-bootstrap";
 import firebase from "../../utils/firebase";
 import itemList from "../../data/itemList.json"
 
@@ -97,6 +97,30 @@ class RequestModal extends React.Component {
 
 
     render() {
+        const IGNPopOver = (
+            <Popover id="popover-trigger-hover-focus" title="Character IGN">
+                Spell your name <strong>exactly</strong> as it is In-Game. This will ensure a farmer will send the items to the proper character.
+            </Popover>
+        );
+
+        const payoutPopOver = (
+            <Popover id="popover-trigger-hover-focus" title="Payout">
+                Specify the <strong>exact amount</strong> in the designated format with commas. (#,###,### or ###,###)
+            </Popover>
+        );
+
+        const itemPopOver = (
+            <Popover id="popover-trigger-hover-focus" title="Character IGN">
+                Select a SQI Upgrade Ingredient from the list.
+            </Popover>
+        );
+
+        const quantityPopOver = (
+            <Popover id="popover-trigger-hover-focus" title="Character IGN">
+                Specify the exact amount in the designated format with commas. (#,### or ###)
+            </Popover>
+        );
+
         return (
             <Grid>
                 <Row className="show-grid">
@@ -107,7 +131,7 @@ class RequestModal extends React.Component {
                                 Making a new hunting request
                             </Panel.Heading>
                             <Panel.Body>
-                                <p>To create a new hunting request, fill out the forms correctly with exactly what you want. </p>
+                                <p>To create a new hunting request, complete the form and submit! </p>
                             </Panel.Body>
                             <Panel.Footer>
                                 <Button onClick={this.handleShow}>New Hunting Request</Button>
@@ -117,11 +141,12 @@ class RequestModal extends React.Component {
                         <Modal show={this.state.show} onHide={this.handleClose}>
                             {this.state.submitted === false ?
                                 <Modal.Body>
-                                    <form onSubmit={this.handleSubmit}>
+                                    <Form onSubmit={this.handleSubmit} inline>
                                         <FormGroup>
                                             <h3>
                                                 Date: {this.state.date}
                                             </h3>
+
                                             <InputGroup>
                                                 <Label>Character IGN: </Label>
                                                 <FormControl
@@ -131,10 +156,17 @@ class RequestModal extends React.Component {
                                                     maxLength="24"
                                                     placeholder="Mosjoandy"
                                                     onChange={this.handleChange}
-                                                    required
-                                                />
+                                                    required/>
                                             </InputGroup>
-                                            <p className="text-muted">Please spell your IGN correctly</p>
+                                            <p className="text-muted">Please spell your IGN correctly
+                                            <OverlayTrigger
+                                                    trigger={['hover', 'focus']}
+                                                    placement="bottom"
+                                                    overlay={IGNPopOver}>
+                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                </OverlayTrigger>
+                                            </p>
+
                                             <InputGroup>
                                                 <Label>Payout: </Label>
                                                 <FormControl
@@ -144,45 +176,69 @@ class RequestModal extends React.Component {
                                                     placeholder="3,550,000"
                                                     onChange={this.handleChange}
                                                     required
-                                                    pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$"
-                                                />
+                                                    pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$"/>
                                             </InputGroup>
-                                            <p className="text-muted">e.g.: 4,500,000 or 750,000</p>
+                                            <p className="text-muted">e.g.: 4,500,000 or 750,000
+                                            <OverlayTrigger
+                                                    trigger={['hover', 'focus']}
+                                                    placement="bottom"
+                                                    overlay={payoutPopOver}>
+                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                </OverlayTrigger>
+                                            </p>
+
                                             <InputGroup>
                                                 <Label>Item: </Label><br />
-                                                <select
+                                                <FormControl
+                                                    componentClass="select"
                                                     className="form-control"
                                                     name="item"
                                                     onChange={this.handleChange}
-                                                    required
-                                                >
+                                                    required>
                                                     {this.state.itemList.map((itemList, index) => (
                                                         <option key={index} value={itemList.value}>{itemList.value}</option>
                                                     ))}
-                                                </select>
+                                                </FormControl>
                                             </InputGroup>
-                                            <p className="text-muted">e.g.: Strange Steel Piece</p>
+                                            <p className="text-muted">e.g.: Strange Steel Piece
+                                            <OverlayTrigger
+                                                    trigger={['hover', 'focus']}
+                                                    placement="bottom"
+                                                    overlay={itemPopOver}>
+                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                </OverlayTrigger>
+                                            </p>
+
                                             <InputGroup>
                                                 <Label>Quantity: </Label>
                                                 <FormControl
                                                     type="text"
                                                     className="form-control"
                                                     name="quantity"
-                                                    maxLength="4"
-                                                    placeholder="1200"
+                                                    maxLength="5"
+                                                    placeholder="1,200"
                                                     onChange={this.handleChange}
                                                     required
-                                                    pattern="[0-9]{1,4}"
-                                                />
+                                                    pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$"/>
                                             </InputGroup>
-                                            <p className="text-muted">e.g.: 1400</p>
+                                            <p className="text-muted">e.g.: 1400
+                                            <OverlayTrigger
+                                                    trigger={['hover', 'focus']}
+                                                    placement="bottom"
+                                                    overlay={quantityPopOver}>
+                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                </OverlayTrigger>
+                                            </p>
+
+                                            <Button
+                                                type="submit"
+                                                value="Submit">
+                                                New Request
+                                            </Button>
+
                                         </FormGroup>
 
-                                        <Button
-                                            type="submit"
-                                            value="Submit"
-                                        >New Request</Button>
-                                    </form>
+                                    </Form>
                                 </Modal.Body>
                                 :
                                 <Modal.Body>

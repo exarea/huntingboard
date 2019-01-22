@@ -64,7 +64,7 @@ class Board extends React.Component {
     };
 
     acceptRequest(huntingRequestList) {
-        console.log("this is the id" + huntingRequestList);
+        // console.log("this is the id" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             farmer: this.props.user,
             accepted: true,
@@ -74,7 +74,7 @@ class Board extends React.Component {
     };
 
     itemSent(huntingRequestList) {
-        console.log("this is the id" + huntingRequestList);
+        // console.log("this is the id" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             itemSent: true,
             status: "Items Sent"
@@ -82,7 +82,7 @@ class Board extends React.Component {
     };
 
     payoutSent(huntingRequestList) {
-        console.log("this is the id" + huntingRequestList);
+        // console.log("this is the id" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             payoutSent: true,
             status: "Complete",
@@ -133,36 +133,105 @@ class Board extends React.Component {
                                             </Col>
                                         </Row>
                                     </Panel.Body>
-                                    <Panel.Footer className="text-center">
+                                    <Panel.Footer style={{ height: 55 }} className="text-center">
                                         {
-                                            huntingRequestList.user === this.props.user ?
-                                                <span></span>
+                                            huntingRequestList.status === "Complete" ?
+                                                <span>Completed</span>
                                                 :
-                                                <span>
+                                                <div>
                                                     {
-                                                        huntingRequestList.accepted === true ?
-                                                            <Button disabled>Accepted</Button>
+                                                        huntingRequestList.user === this.props.user ?
+                                                            <div>
+                                                                {
+                                                                    huntingRequestList.user === this.props.user && huntingRequestList.itemSent === true ?
+
+                                                                        <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
+                                                                        :
+                                                                        <Button disabled>Send Payment</Button>}
+                                                            </div>
                                                             :
-                                                            <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                                            <span> </span>
                                                     }
-                                                </span>
-                                        }
-                                        <span> </span>
-                                        {
-                                            huntingRequestList.user === this.props.user ?
-                                                <span></span>
-                                                :
-                                                <span>
+
+
+                                                    {
+                                                        huntingRequestList.user !== this.props.user ?
+                                                            <span>
+                                                                {
+                                                                    huntingRequestList.accepted === false ?
+                                                                        <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                                                        :
+                                                                        <span>
+                                                                            {
+                                                                                huntingRequestList.farmer === this.props.user ?
+                                                                                    <Button disabled>Accepted</Button>
+                                                                                    :
+                                                                                    <span> </span>
+                                                                            }
+                                                                        </span>
+                                                                }
+                                                            </span>
+                                                            :
+                                                            <span> </span>
+                                                    }
+
                                                     {
                                                         huntingRequestList.farmer === this.props.user && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
-                                                            <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
-                                                            :
-                                                            <Button disabled>Items Sent</Button>
-                                                    }
-                                                </span>
+                                                            <span>
+                                                                {
+                                                                    huntingRequestList.accepted === false ?
 
+                                                                        <Button disabled>Items Sent</Button>
+                                                                        :
+                                                                        <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
+                                                                }
+                                                            </span>
+                                                            :
+                                                            <span> </span>
+                                                    }
+                                                </div>
                                         }
-                                        <span> </span>
+
+
+
+                                        {/* {
+                                            huntingRequestList.farmer === this.props.user ?
+                                            <div>
+                                                {
+                                                    huntingRequestList.user === this.props.user ?
+                                                        <span></span>
+                                                        :
+                                                        <span>
+                                                            {
+                                                                huntingRequestList.accepted === true ?
+                                                                    <Button disabled>Accepted</Button>
+                                                                    :
+                                                                    <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                                            }
+                                                        </span>
+                                                }
+                                                <span> </span>
+
+                                                {
+                                                    huntingRequestList.user === this.props.user ?
+                                                        <span></span>
+                                                        :
+                                                        <span>
+                                                            {
+                                                                huntingRequestList.farmer === this.props.user && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
+                                                                    <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
+                                                                    :
+                                                                    <Button disabled>Items Sent</Button>
+                                                            }
+                                                        </span>
+
+                                                }
+                                                <span> </span>
+                                            </div>
+                                            :
+                                            <Button disabled>Unavailable</Button>
+                                        }
+
                                         {
                                             huntingRequestList.payoutSent === false && huntingRequestList.user === this.props.user ?
                                                 <span>
@@ -176,7 +245,7 @@ class Board extends React.Component {
                                                 </span>
                                                 :
                                                 <span></span>
-                                        }
+                                        } */}
                                     </Panel.Footer>
                                 </Panel>
                             </Col>
