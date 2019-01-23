@@ -99,7 +99,7 @@ class RequestModal extends React.Component {
     };
 
     handleShow() {
-         // Modal show function
+        // Modal show function
         this.setState({
             show: true
         });
@@ -109,25 +109,25 @@ class RequestModal extends React.Component {
     render() {
         // Popover data in modal form
         const IGNPopOver = (
-            <Popover id="popover-trigger-hover-focus" title="Character IGN">
+            <Popover id="popover-trigger-hover-focus">
                 Spell your name <strong>exactly</strong> as it is In-Game. This will ensure a farmer will send the items to the proper character.
             </Popover>
         );
 
         const payoutPopOver = (
-            <Popover id="popover-trigger-hover-focus" title="Payout">
+            <Popover id="popover-trigger-hover-focus">
                 Specify the <strong>exact amount</strong> in the designated format with commas. (#,###,### or ###,###)
             </Popover>
         );
 
         const itemPopOver = (
-            <Popover id="popover-trigger-hover-focus" title="Character IGN">
+            <Popover id="popover-trigger-hover-focus">
                 Select a SQI Upgrade Ingredient from the list.
             </Popover>
         );
 
         const quantityPopOver = (
-            <Popover id="popover-trigger-hover-focus" title="Character IGN">
+            <Popover id="popover-trigger-hover-focus">
                 Specify the exact amount in the designated format with commas. (#,### or ###)
             </Popover>
         );
@@ -152,152 +152,152 @@ class RequestModal extends React.Component {
                         <Modal show={this.state.show} onHide={this.handleClose}>
                             {/* if submission is false, show forms with fields that can be filled out */
                                 this.state.submitted === false ?
-                                <Modal.Body>
-                                    <Form onSubmit={this.handleSubmit} inline>
-                                        <FormGroup>
-                                            <h3>
-                                                Date: {this.state.date}
-                                            </h3>
+                                    <Modal.Body>
+                                        <Form onSubmit={this.handleSubmit} inline>
+                                            <FormGroup>
+                                                <h3>
+                                                    Date: {this.state.date}
+                                                </h3>
 
-                                            <InputGroup>
-                                                <Label>Character IGN: </Label>
-                                                <FormControl
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="poster"
-                                                    maxLength="24"
-                                                    placeholder="Mosjoandy"
-                                                    onChange={this.handleChange}
-                                                    required/>
-                                            </InputGroup>
-                                            <p className="text-muted">Please spell your IGN correctly
+                                                <InputGroup>
+                                                    <Label>Character IGN: </Label>
+                                                    <FormControl
+                                                        type="text"
+                                                        className="form-control"
+                                                        name="poster"
+                                                        maxLength="24"
+                                                        placeholder="Mosjoandy"
+                                                        onChange={this.handleChange}
+                                                        required />
+                                                </InputGroup>
+                                                <p className="text-muted">Please spell your IGN correctly
                                             <OverlayTrigger
-                                                    trigger={['hover', 'focus']}
-                                                    placement="bottom"
-                                                    overlay={IGNPopOver}>
-                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
-                                                </OverlayTrigger>
-                                            </p>
+                                                        trigger={['hover', 'focus']}
+                                                        placement="bottom"
+                                                        overlay={IGNPopOver}>
+                                                        <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                    </OverlayTrigger>
+                                                </p>
 
-                                            <InputGroup>
-                                                <Label>Payout: </Label>
-                                                <FormControl
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="payout"
-                                                    placeholder="3,550,000"
-                                                    onChange={this.handleChange}
-                                                    required
-                                                    pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$"/>
-                                            </InputGroup>
-                                            <p className="text-muted">e.g.: 4,500,000 or 750,000
+                                                <InputGroup>
+                                                    <Label>Payout: </Label>
+                                                    <FormControl
+                                                        type="text"
+                                                        className="form-control"
+                                                        name="payout"
+                                                        placeholder="3,550,000"
+                                                        onChange={this.handleChange}
+                                                        required
+                                                        pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$" />
+                                                </InputGroup>
+                                                <p className="text-muted">e.g.: 4,500,000 or 750,000
                                             <OverlayTrigger
-                                                    trigger={['hover', 'focus']}
-                                                    placement="bottom"
-                                                    overlay={payoutPopOver}>
-                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
-                                                </OverlayTrigger>
-                                            </p>
+                                                        trigger={['hover', 'focus']}
+                                                        placement="bottom"
+                                                        overlay={payoutPopOver}>
+                                                        <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                    </OverlayTrigger>
+                                                </p>
 
-                                            <InputGroup>
-                                                <Label>Item: </Label><br />
-                                                <FormControl
-                                                    componentClass="select"
-                                                    className="form-control"
-                                                    name="item"
-                                                    onChange={this.handleChange}
-                                                    required>
-                                                    {this.state.itemList.map((itemList, index) => (
-                                                        <option key={index} value={itemList.value}>{itemList.value}</option>
-                                                    ))}
-                                                </FormControl>
-                                            </InputGroup>
-                                            <p className="text-muted">e.g.: Strange Steel Piece
+                                                <InputGroup>
+                                                    <Label>Item: </Label><br />
+                                                    <FormControl
+                                                        componentClass="select"
+                                                        className="form-control"
+                                                        name="item"
+                                                        onChange={this.handleChange}
+                                                        required>
+                                                        {this.state.itemList.map((itemList, index) => (
+                                                            <option key={index} value={itemList.value}>{itemList.value}</option>
+                                                        ))}
+                                                    </FormControl>
+                                                </InputGroup>
+                                                <p className="text-muted">e.g.: Strange Steel Piece
                                             <OverlayTrigger
-                                                    trigger={['hover', 'focus']}
-                                                    placement="bottom"
-                                                    overlay={itemPopOver}>
-                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
-                                                </OverlayTrigger>
-                                            </p>
+                                                        trigger={['hover', 'focus']}
+                                                        placement="bottom"
+                                                        overlay={itemPopOver}>
+                                                        <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                    </OverlayTrigger>
+                                                </p>
 
-                                            <InputGroup>
-                                                <Label>Quantity: </Label>
-                                                <FormControl
-                                                    type="text"
-                                                    className="form-control"
-                                                    name="quantity"
-                                                    maxLength="5"
-                                                    placeholder="1,200"
-                                                    onChange={this.handleChange}
-                                                    required
-                                                    pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$"/>
-                                            </InputGroup>
-                                            <p className="text-muted">e.g.: 1400
+                                                <InputGroup>
+                                                    <Label>Quantity: </Label>
+                                                    <FormControl
+                                                        type="text"
+                                                        className="form-control"
+                                                        name="quantity"
+                                                        maxLength="5"
+                                                        placeholder="1,200"
+                                                        onChange={this.handleChange}
+                                                        required
+                                                        pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$" />
+                                                </InputGroup>
+                                                <p className="text-muted">e.g.: 1400
                                             <OverlayTrigger
-                                                    trigger={['hover', 'focus']}
-                                                    placement="bottom"
-                                                    overlay={quantityPopOver}>
-                                                    <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
-                                                </OverlayTrigger>
-                                            </p>
+                                                        trigger={['hover', 'focus']}
+                                                        placement="bottom"
+                                                        overlay={quantityPopOver}>
+                                                        <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                    </OverlayTrigger>
+                                                </p>
 
-                                            <Button
-                                                type="submit"
-                                                value="Submit">
-                                                New Request
+                                                <Button
+                                                    type="submit"
+                                                    value="Submit">
+                                                    New Request
                                             </Button>
 
-                                        </FormGroup>
+                                            </FormGroup>
 
-                                    </Form>
-                                </Modal.Body>
-                                :
-                                // if form is filled out and submission is true, show the data the user submitted in disabled form
-                                <Modal.Body>
-                                    <form onSubmit={this.handleSubmit}>
-                                        <FormGroup>
-                                            <h3>
-                                                Date: {this.state.date}
-                                            </h3>
-                                            <InputGroup>
-                                                <Label>Character IGN: </Label>
-                                                <FormControl
-                                                    placeholder={this.state.poster}
-                                                    disabled
-                                                />
-                                            </InputGroup>
+                                        </Form>
+                                    </Modal.Body>
+                                    :
+                                    // if form is filled out and submission is true, show the data the user submitted in disabled form
+                                    <Modal.Body>
+                                        <form onSubmit={this.handleSubmit}>
+                                            <FormGroup>
+                                                <h3>
+                                                    Date: {this.state.date}
+                                                </h3>
+                                                <InputGroup>
+                                                    <Label>Character IGN: </Label>
+                                                    <FormControl
+                                                        placeholder={this.state.poster}
+                                                        disabled
+                                                    />
+                                                </InputGroup>
 
-                                            <InputGroup>
-                                                <Label>Payout: </Label>
-                                                <FormControl
-                                                    placeholder={this.state.payout}
-                                                    disabled
-                                                />
-                                            </InputGroup>
+                                                <InputGroup>
+                                                    <Label>Payout: </Label>
+                                                    <FormControl
+                                                        placeholder={this.state.payout}
+                                                        disabled
+                                                    />
+                                                </InputGroup>
 
-                                            <InputGroup>
-                                                <Label>Item: </Label>
-                                                <FormControl
-                                                    placeholder={this.state.item}
-                                                    disabled
-                                                />
-                                            </InputGroup>
+                                                <InputGroup>
+                                                    <Label>Item: </Label>
+                                                    <FormControl
+                                                        placeholder={this.state.item}
+                                                        disabled
+                                                    />
+                                                </InputGroup>
 
-                                            <InputGroup>
-                                                <Label>Quantity: </Label>
-                                                <FormControl
-                                                    placeholder={this.state.quantity}
-                                                    disabled
-                                                />
-                                            </InputGroup>
-                                        </FormGroup>
-                                        <Button
-                                            bsStyle="success"
-                                            disabled
-                                        >Submitted</Button>
-                                    </form>
-                                </Modal.Body>
+                                                <InputGroup>
+                                                    <Label>Quantity: </Label>
+                                                    <FormControl
+                                                        placeholder={this.state.quantity}
+                                                        disabled
+                                                    />
+                                                </InputGroup>
+                                            </FormGroup>
+                                            <Button
+                                                bsStyle="success"
+                                                disabled
+                                            >Submitted</Button>
+                                        </form>
+                                    </Modal.Body>
                             }
                             {/* Button for submission */}
                             <Modal.Footer>

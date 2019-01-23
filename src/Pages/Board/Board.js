@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Board.css";
-import { Grid, Row, Col, Panel, Button } from "react-bootstrap";
+import { Grid, Row, Col, Panel, Button, Modal } from "react-bootstrap";
 import firebase from "../../utils/firebase";
 import itemList from "../../data/itemList.json"
 
@@ -12,7 +12,9 @@ class Board extends React.Component {
             itemList: itemList,
             itemImage: "",
             itemLink: "",
+            show: false,
             huntingRequestList: [],
+            id: "",
             submitted: false,
             date: new Date().toDateString(),
             user: "",
@@ -27,9 +29,13 @@ class Board extends React.Component {
             itemSent: "",
             payoutSent: "",
         };
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+
         this.acceptRequest = this.acceptRequest.bind(this);
         this.itemSent = this.itemSent.bind(this);
         this.payoutSent = this.payoutSent.bind(this);
+        this.cancelRequest = this.cancelRequest.bind(this);
     };
 
     componentDidMount() {
@@ -68,8 +74,34 @@ class Board extends React.Component {
 
     };
 
+    cancelRequest(huntingRequestList) {
+        // Pass huntingRequestList argument, make reference and update specific object
+        console.log("this is the id of the item closed" + huntingRequestList);
+        firebase.database().ref("huntingRequest/" + huntingRequestList).update({
+            // update states accordingly and push firebase
+            status: "Closed",
+            statusColor: "danger"
+        });
+    };
+
+    handleClose() {
+        // Modal close function
+        this.setState({
+            show: false,
+        });
+    };
+
+    handleShow(huntingRequestList) {
+        // Modal show function
+        this.setState({
+            id: huntingRequestList.id,
+            show: true
+        });
+    };
+
     acceptRequest(huntingRequestList) {
         // Pass huntingRequestList argument, make reference and update specific object
+        console.log("this is the id of the item accepted" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             // update states accordingly and push firebase
             farmer: this.props.user,
@@ -81,6 +113,7 @@ class Board extends React.Component {
 
     itemSent(huntingRequestList) {
         // Pass huntingRequestList argument, make reference to specific object
+        console.log("this is the id of the item sent" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             // update states accordingly and push firebase
             itemSent: true,
@@ -90,6 +123,7 @@ class Board extends React.Component {
 
     payoutSent(huntingRequestList) {
         // Pass huntingRequestList argument, make reference to specific object
+        console.log("this is the id of the payout sent" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             // update states accordingly and push firebase
             payoutSent: true,
@@ -103,13 +137,55 @@ class Board extends React.Component {
             <Grid style={{ fontSize: 15 }}>
                 <Row className="show-grid">
                     <Col md={9}>
-                        {/* Show the entire arry of huntingRequestList  */
-                            this.state.huntingRequestList.map((huntingRequestList, index) => (
+                        {/* Show the entire arry of huntingRequestList BACKWARDS */
+                            this.state.huntingRequestList.slice(0).reverse().map((huntingRequestList, index) => (
                                 <Col md={4} key={index} id={huntingRequestList.id}>
                                     <Panel bsStyle={(huntingRequestList.statusColor)}>
                                         <Panel.Heading>
                                             <Panel.Title>
-                                                <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}{huntingRequestList.item}
+                                                <Row>
+                                                    <Col xs={10}>
+                                                        <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}{huntingRequestList.item}
+                                                    </Col>
+
+                                                    <Col xs={1}>
+                                                        {/* if the logged in user owns the quest, has button to cancel quest*/
+                                                            huntingRequestList.user === this.props.user && huntingRequestList.status !== "Closed" ?
+                                                                <Button
+                                                                    bsStyle="danger"
+                                                                    bsSize="xsmall"
+                                                                    onClick={() => { this.handleShow(huntingRequestList) }}>
+                                                                    X
+                                                                </Button>
+                                                                :
+                                                                <span> </span>
+                                                        }
+                                                        <Modal show={this.state.show} onHide={this.handleClose}>
+                                                            <Modal.Header closeButton>
+                                                                <Modal.Title id="contained-modal-title-sm">Cancel Request</Modal.Title>
+                                                            </Modal.Header>
+                                                            <Modal.Body>
+                                                                <Row>
+                                                                    <Col xs={12} className="text-center">
+                                                                        <div>Confirm cancellation of your request{this.state.id}</div>
+                                                                        <br />
+                                                                        <div>
+                                                                            <Button
+                                                                                bsStyle="danger"
+                                                                                bsSize="large"
+                                                                                onClick={() => {
+                                                                                    this.cancelRequest(this.state.id)
+                                                                                    this.handleClose()
+                                                                                }}>
+                                                                                Cancel My Request
+                                                                            </Button>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
+                                                            </Modal.Body>
+                                                        </Modal>
+                                                    </Col>
+                                                </Row>
                                             </Panel.Title>
                                         </Panel.Heading>
 
@@ -142,65 +218,74 @@ class Board extends React.Component {
                                                 </Col>
                                             </Row>
                                         </Panel.Body>
+
                                         {/* Begin button display area  */}
                                         <Panel.Footer style={{ height: 55 }} className="text-center">
-                                            {/* if the quest is incomplete, show all the other buttons */
-                                                huntingRequestList.status === "Complete" ?
-                                                    <span>Completed</span>
+                                            {/* if the quest owner cancels the quest */
+                                                huntingRequestList.status === "Closed" ?
+                                                    <span>Closed</span>
                                                     :
                                                     <div>
-                                                        {/* if the logged in user owns the quest, show send-payment button */
-                                                            huntingRequestList.user === this.props.user ?
-                                                                <div>
-                                                                    {/* if the logged in user owns the quest AND itemSent status is false, show send payment button*/
-                                                                        huntingRequestList.user === this.props.user && huntingRequestList.itemSent === true ?
-
-                                                                            <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
-                                                                            :
-                                                                            <Button disabled>Send Payment</Button>}
-                                                                </div>
+                                                        {/* if the quest is incomplete, show all the other buttons */
+                                                            huntingRequestList.status === "Complete" ?
+                                                                <span>Completed</span>
                                                                 :
-                                                                <span> </span>
-                                                        }
+                                                                <div>
+                                                                    {/* if the logged in user owns the quest, show send-payment button */
+                                                                        huntingRequestList.user === this.props.user ?
+                                                                            <div>
+                                                                                {/* if the logged in user owns the quest AND itemSent status is false, show send payment button*/
+                                                                                    huntingRequestList.user === this.props.user && huntingRequestList.itemSent === true ?
 
-
-                                                        {/* if the logged in user is NOT quest ownwer, show accept button */
-                                                            huntingRequestList.user !== this.props.user ?
-                                                                <span>
-                                                                    {/* if the quest has not been accepted, show accept quest button */
-                                                                        huntingRequestList.accepted === false ?
-                                                                            <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
-                                                                            :
-                                                                            <span>
-                                                                                {/* if the logged in user is the farmer, show that they have accepted the quest */
-                                                                                    huntingRequestList.farmer === this.props.user ?
-                                                                                        <Button disabled>Accepted</Button>
+                                                                                        <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
                                                                                         :
-                                                                                        <span> </span>
+                                                                                        <Button disabled>Send Payment</Button>}
+                                                                            </div>
+                                                                            :
+                                                                            <span> </span>
+                                                                    }
+
+
+                                                                    {/* if the logged in user is NOT quest ownwer, show accept button */
+                                                                        huntingRequestList.user !== this.props.user ?
+                                                                            <span>
+                                                                                {/* if the quest has not been accepted, show accept quest button */
+                                                                                    huntingRequestList.accepted === false ?
+                                                                                        <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                                                                        :
+                                                                                        <span>
+                                                                                            {/* if the logged in user is the farmer, show that they have accepted the quest */
+                                                                                                huntingRequestList.farmer === this.props.user ?
+                                                                                                    <Button disabled>Accepted</Button>
+                                                                                                    :
+                                                                                                    <span> </span>
+                                                                                            }
+                                                                                        </span>
                                                                                 }
                                                                             </span>
-                                                                    }
-                                                                </span>
-                                                                :
-                                                                <span> </span>
-                                                        }
-
-                                                        {/* if the logged in user is the farmer, AND quest has been accepted, AND items haven't been sent, show send items button */
-                                                            huntingRequestList.farmer === this.props.user && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
-                                                                <span>
-                                                                    {/* if the logged in user accepted the quest, show the send items button */
-                                                                        huntingRequestList.accepted === false ?
-
-                                                                            <Button disabled>Items Sent</Button>
                                                                             :
-                                                                            <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
+                                                                            <span> </span>
                                                                     }
-                                                                </span>
-                                                                :
-                                                                <span> </span>
+
+                                                                    {/* if the logged in user is the farmer, AND quest has been accepted, AND items haven't been sent, show send items button */
+                                                                        huntingRequestList.farmer === this.props.user && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
+                                                                            <span>
+                                                                                {/* if the logged in user accepted the quest, show the send items button */
+                                                                                    huntingRequestList.accepted === false ?
+
+                                                                                        <Button disabled>Items Sent</Button>
+                                                                                        :
+                                                                                        <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
+                                                                                }
+                                                                            </span>
+                                                                            :
+                                                                            <span> </span>
+                                                                    }
+                                                                </div>
                                                         }
                                                     </div>
                                             }
+
                                         </Panel.Footer>
                                     </Panel>
                                 </Col>

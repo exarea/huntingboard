@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Grid, Button } from "react-bootstrap";
 import './App.css';
 import Nav from "./Components/Nav";
@@ -54,16 +54,22 @@ class App extends Component {
               <Button bsStyle="primary" onClick={this.login}>Login</Button>
             }
           </Nav>
-          <Switch>
-            {this.state.userExists === true ?
-              <Grid>
-                <RequestModal user={this.state.user} />
-                <Board user={this.state.user} />
-              </Grid>
-              :
-              <Route exact path="/" render={() => <Button bsStyle="primary" onClick={this.login}>Login</Button>} />
-            }
-          </Switch>
+
+          {this.state.userExists === true ?
+            <Grid>
+              <RequestModal user={this.state.user} />
+              <Board user={this.state.user} />
+            </Grid>
+            :
+            <Button bsStyle="primary" onClick={this.login}>Login</Button>
+          }
+
+          {/* <Switch>
+            <Route exact path="/" render={() => */}
+
+          {/* } />
+          </Switch> */}
+
           {/* <Switch>
             <Route exact path="/" render={() =>
               <Grid>
