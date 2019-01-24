@@ -158,7 +158,7 @@ class Board extends React.Component {
                                                                     X
                                                                 </Button>
                                                                 :
-                                                                <span> </span>
+                                                                null
                                                         }
                                                         <Modal show={this.state.show} onHide={this.handleClose}>
                                                             <Modal.Header closeButton>
@@ -242,7 +242,7 @@ class Board extends React.Component {
                                                                                         <Button disabled>Send Payment</Button>}
                                                                             </div>
                                                                             :
-                                                                            <span> </span>
+                                                                            null
                                                                     }
 
 
@@ -258,13 +258,13 @@ class Board extends React.Component {
                                                                                                 huntingRequestList.farmer === this.props.user ?
                                                                                                     <Button disabled>Accepted</Button>
                                                                                                     :
-                                                                                                    <span> </span>
+                                                                                                    null
                                                                                             }
                                                                                         </span>
                                                                                 }
                                                                             </span>
                                                                             :
-                                                                            <span> </span>
+                                                                            null
                                                                     }
 
                                                                     {/* if the logged in user is the farmer, AND quest has been accepted, AND items haven't been sent, show send items button */
@@ -279,7 +279,7 @@ class Board extends React.Component {
                                                                                 }
                                                                             </span>
                                                                             :
-                                                                            <span> </span>
+                                                                            null
                                                                     }
                                                                 </div>
                                                         }
