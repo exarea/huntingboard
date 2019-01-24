@@ -76,7 +76,7 @@ class Board extends React.Component {
 
     cancelRequest(huntingRequestList) {
         // Pass huntingRequestList argument, make reference and update specific object
-        console.log("this is the id of the item closed" + huntingRequestList);
+        // console.log("this is the id of the item closed" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
             // update states accordingly and push firebase
             status: "Closed",
