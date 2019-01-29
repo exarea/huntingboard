@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Grid, Button } from "react-bootstrap";
 import './App.css';
 import Nav from "./Components/Nav";
-import { auth, provider } from "./utils/firebase";
+import { auth, googleProvider } from "./utils/firebase";
 
 import Board from "./Pages/Board/Board";
 import RequestModal from "./Components/RequestModal/RequestModal";
@@ -33,7 +33,7 @@ class App extends Component {
   };
 
   login() {
-    auth.signInWithPopup(provider).then((result) => {
+    auth.signInWithPopup(googleProvider).then((result) => {
       console.log(result.user);
       var user = result.user;
       this.setState({ user: user.displayName });

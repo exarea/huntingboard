@@ -2,35 +2,33 @@ import React from 'react';
 import "./Board.css";
 import { Grid, Row, Col, Panel, Button, Modal, PanelGroup, Glyphicon } from "react-bootstrap";
 import firebase from "../../utils/firebase";
-import itemList from "../../data/itemList.json"
 
 class Board extends React.Component {
 
     constructor() {
         super()
         this.state = {
-
             show: false,
 
             huntingRequestList: [],
 
-            id: "",
-            submitted: false,
-            date: new Date().toDateString(),
-            user: "",
-            IGN: "",
-            farmer: "",
-            payout: "",
-            item: "",
-            itemList: itemList,
-            itemImage: "",
-            itemLink: "",
-            quantity: "",
-            status: "",
-            statusColor: "",
-            accepted: false,
-            itemSent: "",
-            payoutSent: "",
+            // id: "",
+            // submitted: false,
+            // date: new Date().toDateString(),
+            // user: "",
+            // IGN: "",
+            // farmer: "",
+            // payout: "",
+            // item: "",
+            // itemList: itemList,
+            // itemImage: "",
+            // itemLink: "",
+            // quantity: "",
+            // status: "",
+            // statusColor: "",
+            // accepted: false,
+            // itemSent: "",
+            // payoutSent: "",
 
             toggleList: true,
             toggleBoxes: false,
@@ -342,8 +340,8 @@ class Board extends React.Component {
                                         this.state.huntingRequestList.slice(0).reverse().map((huntingRequestList, index) => (
                                             <Col md={4} key={index} id={huntingRequestList.id}>
                                                 <Panel bsStyle={(huntingRequestList.statusColor)}>
-                                                    <Panel.Heading>
-                                                        <Panel.Title>
+                                                    <Panel.Heading style={{ height: 75}}>
+                                                        <Panel.Title >
                                                             <Row>
                                                                 <Col xs={10}>
                                                                     <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}{huntingRequestList.item}
@@ -368,7 +366,7 @@ class Board extends React.Component {
                                                                         <Modal.Body>
                                                                             <Row>
                                                                                 <Col xs={12} className="text-center">
-                                                                                    <div>Confirm cancellation of your request{this.state.id}</div>
+                                                                                    <div>Confirm cancellation of your request</div>
                                                                                     <br />
                                                                                     <div>
                                                                                         <Button
