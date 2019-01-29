@@ -47,7 +47,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Nav photoURL={this.state.userPhoto}>
+          <Nav>
             {this.state.user ?
               <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
               :
@@ -57,8 +57,8 @@ class App extends Component {
 
           {this.state.userExists === true ?
             <Grid>
-              <RequestModal user={this.state.user} />
-              <Board user={this.state.user} />
+              <RequestModal user={this.state.user}/>
+              <Board user={this.state.user}/>
             </Grid>
             :
             <Button bsStyle="primary" onClick={this.login}>Login</Button>
