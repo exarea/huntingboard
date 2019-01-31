@@ -55,23 +55,23 @@ class Board extends React.Component {
             let newState = [];
 
             // Run forloop pushing objects into empty array
-            for (let info in huntingRequest) {
+            for (let data in huntingRequest) {
                 newState.push({
-                    id: info,
-                    date: huntingRequest[info].date,
-                    user: huntingRequest[info].user,
-                    poster: huntingRequest[info].poster,
-                    farmer: huntingRequest[info].farmer,
-                    payout: huntingRequest[info].payout,
-                    item: huntingRequest[info].item,
-                    itemImage: huntingRequest[info].itemImage,
-                    itemLink: huntingRequest[info].itemLink,
-                    quantity: huntingRequest[info].quantity,
-                    status: huntingRequest[info].status,
-                    accepted: huntingRequest[info].accepted,
-                    itemSent: huntingRequest[info].itemSent,
-                    payoutSent: huntingRequest[info].payoutSent,
-                    statusColor: huntingRequest[info].statusColor
+                    id: data,
+                    date: huntingRequest[data].date,
+                    user: huntingRequest[data].user,
+                    poster: huntingRequest[data].poster,
+                    farmer: huntingRequest[data].farmer,
+                    payout: huntingRequest[data].payout,
+                    item: huntingRequest[data].item,
+                    itemImage: huntingRequest[data].itemImage,
+                    itemLink: huntingRequest[data].itemLink,
+                    quantity: huntingRequest[data].quantity,
+                    status: huntingRequest[data].status,
+                    accepted: huntingRequest[data].accepted,
+                    itemSent: huntingRequest[data].itemSent,
+                    payoutSent: huntingRequest[data].payoutSent,
+                    statusColor: huntingRequest[data].statusColor
                 });
             };
             // console.log(newState)
@@ -82,7 +82,6 @@ class Board extends React.Component {
     };
 
     toggleList() {
-        console.log("poops!");
         this.setState({
             toggleList: true,
             toggleBoxes: false
@@ -90,7 +89,6 @@ class Board extends React.Component {
     };
 
     toggleBoxes() {
-        console.log("poops!");
         this.setState({
             toggleList: false,
             toggleBoxes: true

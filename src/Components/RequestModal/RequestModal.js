@@ -8,17 +8,20 @@ class RequestModal extends React.Component {
     constructor() {
         super()
         this.state = {
-            itemList: itemList,
-            itemImage: "",
-            itemLink: "",
             show: false,
+
             user: "",
+
             submitted: false,
+
             date: new Date().toDateString(),
             poster: "",
             farmer: "",
             payout: "",
             item: "",
+            itemList: itemList,
+            itemImage: "",
+            itemLink: "",
             quantity: "",
             status: "",
             statusColor: "",
@@ -62,7 +65,7 @@ class RequestModal extends React.Component {
         // Make reference to firebase huntingRequest and make new object
         const huntingRequest = firebase.database().ref("huntingRequest");
         // Data submitted by the user
-        const info = {
+        const data = {
             date: this.state.date,
             user: this.props.user,
             poster: this.state.poster,
@@ -80,7 +83,7 @@ class RequestModal extends React.Component {
             payoutSent: false
         };
         // Push new object to firebase
-        huntingRequest.push(info);
+        huntingRequest.push(data);
 
         // Change state of submission
         this.setState({

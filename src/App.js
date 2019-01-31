@@ -7,6 +7,7 @@ import { auth, googleProvider } from "./utils/firebase";
 
 import Board from "./Pages/Board/Board";
 import RequestModal from "./Components/RequestModal/RequestModal";
+import Registration from "./Components/Registration/Registration";
 
 class App extends Component {
 
@@ -47,7 +48,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Nav>
+          <Nav user={this.state.user}>
             {this.state.user ?
               <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
               :
@@ -57,11 +58,14 @@ class App extends Component {
 
           {this.state.userExists === true ?
             <Grid>
-              <RequestModal user={this.state.user}/>
-              <Board user={this.state.user}/>
+              <RequestModal user={this.state.user} userID={this.state.userID} />
+              <Board user={this.state.user} userID={this.state.userID} />
             </Grid>
             :
-            <Button bsStyle="primary" onClick={this.login}>Login</Button>
+            <Grid>
+              <Button bsStyle="primary" onClick={this.login}>Login</Button>
+              <Registration />
+            </Grid>
           }
 
           {/* <Switch>
