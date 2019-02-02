@@ -8,12 +8,17 @@ import { auth, googleProvider } from "./utils/firebase";
 import Board from "./Pages/Board/Board";
 import RequestModal from "./Components/RequestModal/RequestModal";
 import Registration from "./Components/Registration/Registration";
+import Login from "./Components/Login/Login";
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      email: '',
+      password: '',
+      error: null,
+
       user: null,
       userExists: false,
       userID: "",
@@ -22,26 +27,27 @@ class App extends Component {
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+
   };
 
-  logout() {
-    auth.signOut().then(() => {
-      this.setState({ user: null });
-      this.setState({ userExists: false })
-      this.setState({ userID: "" });
-      this.setState({ userPhoto: "" });
-    });
-  };
+    logout() {
+      auth.signOut().then(() => {
+        this.setState({ user: null });
+        this.setState({ userExists: false })
+        this.setState({ userID: "" });
+        this.setState({ userPhoto: "" });
+      });
+    };
 
-  login() {
-    auth.signInWithPopup(googleProvider).then((result) => {
-      console.log(result.user);
-      var user = result.user;
-      this.setState({ user: user.displayName });
-      this.setState({ userExists: true })
-      this.setState({ userID: user.uid });
-      this.setState({ userPhoto: user.photoURL });
-    });
+    login() {
+      auth.signInWithPopup(googleProvider).then((result) => {
+        console.log(result.user);
+        var user = result.user;
+        this.setState({ user: user.displayName });
+        this.setState({ userExists: true })
+        this.setState({ userID: user.uid });
+        this.setState({ userPhoto: user.photoURL });
+      });
   };
 
   render() {
@@ -49,23 +55,25 @@ class App extends Component {
       <Router>
         <div>
           <Nav user={this.state.user}>
-            {this.state.user ?
-              <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
-              :
-              <Button bsStyle="primary" onClick={this.login}>Login</Button>
+            {
+              this.state.user ?
+                <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
+                :
+                <Button bsStyle="primary" onClick={this.login}>Login</Button>
             }
           </Nav>
 
-          {this.state.userExists === true ?
-            <Grid>
-              <RequestModal user={this.state.user} userID={this.state.userID} />
-              <Board user={this.state.user} userID={this.state.userID} />
-            </Grid>
-            :
-            <Grid>
-              <Button bsStyle="primary" onClick={this.login}>Login</Button>
-              <Registration />
-            </Grid>
+          {
+            this.state.userExists === true ?
+              <Grid>
+                <RequestModal user={this.state.user} userID={this.state.userID} />
+                <Board user={this.state.user} userID={this.state.userID} />
+              </Grid>
+              :
+              <Grid>
+                <Login />
+                <Registration />
+              </Grid>
           }
 
           {/* <Switch>
