@@ -37,7 +37,7 @@ class Registration extends React.Component {
         const { email, password } = this.state;
         auth.createUserWithEmailAndPassword(email, password)
             .then((result) => {
-                const registeredUser = firebase.database().ref("users/" + result.user.uid);
+                const registeredUser = firebase.database().ref("users/");
                 const data = {
                     userID: result.user.uid,
                     email: this.state.email,
@@ -46,6 +46,9 @@ class Registration extends React.Component {
                 registeredUser.push(data);
                 console.log("Registration Successful");
                 this.setState({ registrationSuccess: true });
+                setTimeout(() => {
+                    this.setState({ show: false });
+                }, 3000);
             })
             .catch((error) => {
                 this.setState({ error: error });
@@ -70,8 +73,8 @@ class Registration extends React.Component {
     spinnyThing() {
         this.setState({
             spinnerShow: true
-        })
-    }
+        });
+    };
 
     render() {
         const { email, password, ign, error } = this.state;
@@ -131,7 +134,7 @@ class Registration extends React.Component {
                                             :
                                             null
                                         }
-                                        
+
                                         {
                                             this.state.spinnerShow === true && error === null ?
                                                 <img style={{ width: 90, height: 75 }} src={require("../../data/loading.gif")} alt="spins" />

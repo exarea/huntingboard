@@ -41,7 +41,7 @@ class Login extends React.Component {
                 var user = result.user;
                 console.log(user);
                 this.setState({ user: user.displayName });
-                this.setState({ userExists: true })
+                this.setState({ userExists: true });
                 this.setState({ userid: user.uid });
                 console.log(this.state.user + " + " + this.state.userExists + " + " + this.state.userid)
                 setTimeout(() => {
@@ -126,7 +126,7 @@ class Login extends React.Component {
                                                     type="submit"
                                                     value="Submit">
                                                     Log In
-                                        </Button>
+                                                </Button>
                                         }
                                     </FormGroup>
                                 </Form>
@@ -168,8 +168,6 @@ class Login extends React.Component {
                                                 :
                                                 null
                                         }
-
-
                                         <Button
                                             type="submit"
                                             value="Submit"

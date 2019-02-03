@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from "react-router-dom";
-import { Grid, Button } from "react-bootstrap";
+// import { Grid, Button } from "react-bootstrap";
 import './App.css';
-import Nav from "./Components/Nav";
-import { auth, googleProvider } from "./utils/firebase";
+// import Nav from "./Components/Nav";
+import firebase, { auth, googleProvider } from "./utils/firebase";
 
-import Board from "./Pages/Board/Board";
-import RequestModal from "./Components/RequestModal/RequestModal";
-import Registration from "./Components/Registration/Registration";
-import Login from "./Components/Login/Login";
+import Home from "./Pages/Home/Home";
+// import Board from "./Pages/Board/Board";
+// import RequestModal from "./Components/RequestModal/RequestModal";
+// import Registration from "./Components/Registration/Registration";
+// import Login from "./Components/Login/Login";
 
 class App extends Component {
 
@@ -54,7 +55,11 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Nav user={this.state.user}>
+          <Home />
+
+
+
+          {/* <Nav user={this.state.user}>
             {
               this.state.user ?
                 <Button bsStyle="primary" onClick={this.logout}>Log Out</Button>
@@ -71,10 +76,12 @@ class App extends Component {
               </Grid>
               :
               <Grid>
-                <Login />
+                <Login action={this.handleSubmit} />
                 <Registration />
               </Grid>
-          }
+          } */}
+
+
 
           {/* <Switch>
             <Route exact path="/" render={() => */}
