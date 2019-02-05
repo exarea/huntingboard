@@ -5,12 +5,13 @@ import firebase from "../../utils/firebase";
 import itemList from "../../data/itemList.json"
 
 class RequestModal extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             show: false,
 
             user: "",
+            ign: this.props.ign,
 
             submitted: false,
 
@@ -106,6 +107,7 @@ class RequestModal extends React.Component {
         this.setState({
             show: true
         });
+        console.log(this.state.ign)
     };
 
 

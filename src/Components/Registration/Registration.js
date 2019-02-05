@@ -37,13 +37,21 @@ class Registration extends React.Component {
         const { email, password } = this.state;
         auth.createUserWithEmailAndPassword(email, password)
             .then((result) => {
-                const registeredUser = firebase.database().ref("users/");
-                const data = {
+                // const registeredUser = firebase.database().ref("users/" + result.user.uid);
+                // const data = {
+                //     userID: result.user.uid,
+                //     email: this.state.email,
+                //     ign: this.state.ign
+                // };
+                // registeredUser.push(data);
+                // console.log("Registration Successful");
+                // this.setState({ registrationSuccess: true });
+
+                firebase.database().ref("users/" + result.user.uid).set({
                     userID: result.user.uid,
                     email: this.state.email,
-                    ign: this.state.ign
-                };
-                registeredUser.push(data);
+                    ign: this.state.ign,
+                });
                 console.log("Registration Successful");
                 this.setState({ registrationSuccess: true });
                 setTimeout(() => {

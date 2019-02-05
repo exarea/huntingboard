@@ -10,11 +10,12 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       error: null,
 
       user: null,
+      ign: null,
       userExists: false,
       userID: "",
       userPhoto: "",
@@ -44,25 +45,44 @@ class Home extends Component {
         var user = result.user;
         this.setState({ userExists: true });
         this.setState({ userid: user.uid });
-        console.log("user exists = " + this.state.userExists)
-        console.log("userid = " + this.state.userid);
 
-        firebase.database().ref("users/" + this.state.userid).on("child_added", function(snapshot) {
-          console.log(snapshot.key);
-        });
+        var that = this;
+        firebase.database().ref("users/" + this.state.userid).on("value", function (snapshot) {
+          var userIGN = (snapshot.val().ign);
+          console.log(userIGN); // WORKS - gives ign from database 
+          that.setState({ ign: userIGN }); // WORKS - sets that.state.ign to ign from database 
+          console.log(that.state.ign); // WORKS - gives ign from that.state 
+        })
+        console.log(that); // WORKS - shows object that has state with ign
+        console.log(that.state); // FAIL - shows state object, but ign is null now?!
 
-        // firebase.database().ref("users").once("value").then(function(snapshot) {
-        //   console.log(snapshot)
-        // })
+        // var stuff = [];
+        // stuff.push(that);
+        // console.log(stuff[0]["state"].ign);
+        // console.log(this.state.ign) //shows that.state.ign === ""
+        // console.log(that.state.ign) //shows null
 
-        setTimeout(() => {
-          this.setState({ show: false });
-        }, 3000);
+        // this.setState({ign: that.state })
+        // const ign = this.state.ign
+        // console.log(ign)
+        // console.log(that.state)
+        // console.log(this.state.ign) //userIGN not defined
+
+
+
+        // var userId = firebase.auth().currentUser.uid;
+        // console.log(userId);
+
+        // setTimeout(() => {
+        //   this.setState({ show: false });
+        // }, 5000);
+
       })
       .catch((error) => {
         this.setState({ error: error });
       });
   };
+
 
   handleClose() {
     // Modal close function
@@ -101,8 +121,16 @@ class Home extends Component {
         {
           this.state.userExists === true ?
             <Grid>
-              <RequestModal user={this.state.user} userID={this.state.userID} />
-              <Board user={this.state.user} userID={this.state.userID} />
+              <RequestModal
+                user={this.state.user}
+                userID={this.state.userID}
+                ign={this.state.ign}
+              />
+              <Board
+                user={this.state.user}
+                userID={this.state.userID}
+                ign={this.state.ign}
+              />
             </Grid>
             :
             <Grid>
