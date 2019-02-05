@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import { Grid, Button } from "react-bootstrap";
 import './App.css';
 // import Nav from "./Components/Nav";
 import { auth, googleProvider } from "./utils/firebase";
 
 import Home from "./Pages/Home/Home";
+import NoMatch from "./Pages/NoMatch/NoMatch";
 // import Board from "./Pages/Board/Board";
 // import RequestModal from "./Components/RequestModal/RequestModal";
 // import Registration from "./Components/Registration/Registration";
@@ -55,7 +56,10 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Home />
+          <Switch>
+            <Route exact path ="/" render={() => <Home/> } /> 
+            <Route component={NoMatch} />
+          </Switch>
           {/* <Nav user={this.state.user}>
             {
               this.state.user ?
