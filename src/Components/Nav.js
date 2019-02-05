@@ -6,7 +6,7 @@ const Nav = (props) => (
     <Navbar>
         <Navbar.Header>
             <Navbar.Brand >
-                <a href="#home">SQI Hunting Board</a>
+                SQI Hunting Board
             </Navbar.Brand>
             <Navbar.Toggle />
         </Navbar.Header>

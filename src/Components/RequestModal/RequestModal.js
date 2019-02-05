@@ -10,12 +10,12 @@ class RequestModal extends React.Component {
         this.state = {
             show: false,
 
-            user: "",
-            ign: this.props.ign,
+            userID: this.props.userID,
 
             submitted: false,
 
             date: new Date().toDateString(),
+            ign: this.props.ign,
             poster: "",
             farmer: "",
             payout: "",
@@ -43,15 +43,6 @@ class RequestModal extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-
-        // console.log("date: " + this.state.date);
-        // console.log("poster: " + this.state.poster);
-        // console.log("farmer: Open");
-        // console.log("payout: " + this.state.payout + "zeny");
-        // console.log("item: " + this.state.item);
-        // console.log("quantity: " + this.state.quantity);
-        // console.log("status: " + this.state.status);
-
         // Run forloop to go through itemList json
         for (var i = 0; i < itemList.length; i++) {
             // if the item user is trying to create exists in the json, pull data
@@ -68,8 +59,8 @@ class RequestModal extends React.Component {
         // Data submitted by the user
         const data = {
             date: this.state.date,
-            user: this.props.user,
-            poster: this.state.poster,
+            userID: this.props.userID,
+            poster: this.props.ign,
             farmer: "Open",
             payout: this.state.payout + " zeny",
             item: this.state.item,
@@ -90,6 +81,12 @@ class RequestModal extends React.Component {
         this.setState({
             submitted: true
         });
+        setTimeout(() => {
+            // console.log(that.state.ign); // WORKS NOW!!
+            this.setState({
+                show: false,
+            });
+        }, 2000);
         // Reset form
         event.target.reset();
     };
@@ -107,17 +104,17 @@ class RequestModal extends React.Component {
         this.setState({
             show: true
         });
-        console.log(this.state.ign)
+        console.log(this.props.ign)
     };
 
 
     render() {
         // Popover data in modal form
-        const IGNPopOver = (
-            <Popover id="popover-trigger-hover-focus">
-                Spell your name <strong>exactly</strong> as it is In-Game. This will ensure a farmer will send the items to the proper character.
-            </Popover>
-        );
+        // const IGNPopOver = (
+        //     <Popover id="popover-trigger-hover-focus">
+        //         Spell your name <strong>exactly</strong> as it is In-Game. This will ensure a farmer will send the items to the proper character.
+        //     </Popover>
+        // );
 
         const payoutPopOver = (
             <Popover id="popover-trigger-hover-focus">
@@ -164,16 +161,19 @@ class RequestModal extends React.Component {
                                                     Date: {this.state.date}
                                                 </h3>
 
-                                                <InputGroup>
+                                                {/* <InputGroup>
                                                     <Label>Character IGN: </Label>
                                                     <FormControl
                                                         type="text"
                                                         className="form-control"
                                                         name="poster"
                                                         maxLength="24"
-                                                        placeholder="Mosjoandy"
+                                                        placeholder={this.props.ign}
                                                         onChange={this.handleChange}
-                                                        required />
+                                                        value={this.props.ign}
+                                                        required
+                                                        disabled
+                                                    />
                                                 </InputGroup>
                                                 <p className="text-muted">Please spell your IGN correctly
                                             <OverlayTrigger
@@ -182,27 +182,7 @@ class RequestModal extends React.Component {
                                                         overlay={IGNPopOver}>
                                                         <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
                                                     </OverlayTrigger>
-                                                </p>
-
-                                                <InputGroup>
-                                                    <Label>Payout: </Label>
-                                                    <FormControl
-                                                        type="text"
-                                                        className="form-control"
-                                                        name="payout"
-                                                        placeholder="3,550,000"
-                                                        onChange={this.handleChange}
-                                                        required
-                                                        pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$" />
-                                                </InputGroup>
-                                                <p className="text-muted">e.g.: 4,500,000 or 750,000
-                                            <OverlayTrigger
-                                                        trigger={['hover', 'focus']}
-                                                        placement="bottom"
-                                                        overlay={payoutPopOver}>
-                                                        <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
-                                                    </OverlayTrigger>
-                                                </p>
+                                                </p> */}
 
                                                 <InputGroup>
                                                     <Label>Item: </Label><br />
@@ -247,6 +227,26 @@ class RequestModal extends React.Component {
                                                     </OverlayTrigger>
                                                 </p>
 
+                                                <InputGroup>
+                                                    <Label>Payout: </Label>
+                                                    <FormControl
+                                                        type="text"
+                                                        className="form-control"
+                                                        name="payout"
+                                                        placeholder="3,550,000"
+                                                        onChange={this.handleChange}
+                                                        required
+                                                        pattern="^\$?(?=.)(?:[1-9]\d{0,2}(?:,?\d{3})*)?$" />
+                                                </InputGroup>
+                                                <p className="text-muted">e.g.: 4,500,000 or 750,000
+                                            <OverlayTrigger
+                                                        trigger={['hover', 'focus']}
+                                                        placement="bottom"
+                                                        overlay={payoutPopOver}>
+                                                        <Glyphicon style={{ fontSize: 15, marginLeft: 5 }} glyph="question-sign" />
+                                                    </OverlayTrigger>
+                                                </p>
+
                                                 <Button
                                                     type="submit"
                                                     value="Submit">
@@ -265,21 +265,13 @@ class RequestModal extends React.Component {
                                                 <h3>
                                                     Date: {this.state.date}
                                                 </h3>
-                                                <InputGroup>
+                                                {/* <InputGroup>
                                                     <Label>Character IGN: </Label>
                                                     <FormControl
-                                                        placeholder={this.state.poster}
+                                                        placeholder={this.props.ign}
                                                         disabled
                                                     />
-                                                </InputGroup>
-
-                                                <InputGroup>
-                                                    <Label>Payout: </Label>
-                                                    <FormControl
-                                                        placeholder={this.state.payout}
-                                                        disabled
-                                                    />
-                                                </InputGroup>
+                                                </InputGroup> */}
 
                                                 <InputGroup>
                                                     <Label>Item: </Label>
@@ -296,6 +288,15 @@ class RequestModal extends React.Component {
                                                         disabled
                                                     />
                                                 </InputGroup>
+
+                                                <InputGroup>
+                                                    <Label>Payout: </Label>
+                                                    <FormControl
+                                                        placeholder={this.state.payout}
+                                                        disabled
+                                                    />
+                                                </InputGroup>
+
                                             </FormGroup>
                                             <Button
                                                 bsStyle="success"

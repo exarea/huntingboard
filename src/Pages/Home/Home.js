@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Board from "../../Pages/Board/Board";
 import RequestModal from "../../Components/RequestModal/RequestModal";
 import Registration from "../../Components/Registration/Registration";
-import { Grid, Row, Col, Modal, Label, Button, FormGroup, InputGroup, Form, FormControl, Glyphicon, Popover, OverlayTrigger } from "react-bootstrap";
+// import Logout from "../../Components/Logout/Logout";
+import { Grid, Modal, Label, Button, FormGroup, InputGroup, Form, FormControl } from "react-bootstrap";
 import Nav from "../../Components/Nav";
 import firebase from "../../utils/firebase";
 
@@ -26,6 +27,7 @@ class Home extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.logOut = this.logOut.bind(this);
 
     this.spinnyThing = this.spinnyThing.bind(this);
   };
@@ -43,52 +45,44 @@ class Home extends Component {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((result) => {
         var user = result.user;
-        this.setState({ userExists: true });
-        this.setState({ userid: user.uid });
+        this.setState({ userID: user.uid });
 
         var that = this;
-        firebase.database().ref("users/" + this.state.userid).on("value", function (snapshot) {
+        firebase.database().ref("users/" + this.state.userID).on("value", function (snapshot) {
           var userIGN = (snapshot.val().ign);
-          console.log(userIGN); // WORKS - gives ign from database 
-          that.setState({ ign: userIGN }); // WORKS - sets that.state.ign to ign from database 
-          console.log(that.state.ign); // WORKS - gives ign from that.state 
-        })
-        console.log(that); // WORKS - shows object that has state with ign
-        console.log(that.state); // FAIL - shows state object, but ign is null now?!
-
-        // var stuff = [];
-        // stuff.push(that);
-        // console.log(stuff[0]["state"].ign);
-        // console.log(this.state.ign) //shows that.state.ign === ""
-        // console.log(that.state.ign) //shows null
-
-        // this.setState({ign: that.state })
-        // const ign = this.state.ign
-        // console.log(ign)
-        // console.log(that.state)
-        // console.log(this.state.ign) //userIGN not defined
-
-
-
-        // var userId = firebase.auth().currentUser.uid;
-        // console.log(userId);
-
-        // setTimeout(() => {
-        //   this.setState({ show: false });
-        // }, 5000);
-
+          var admin = (snapshot.val().admin);
+          that.setState({ 
+            ign: userIGN,
+            admin: admin,
+          }); // WORKS - sets that.state.ign to ign from database 
+        }) // Async issue, - use setTimeout!
+        setTimeout(() => {
+          // console.log(that.state.ign); // WORKS NOW!!
+          // console.log(that.state.admin);
+          this.setState({
+            spinnerShow: false,
+            userExists: true,
+            show: false,
+          });
+        }, 3000);
       })
       .catch((error) => {
         this.setState({ error: error });
       });
   };
 
+  logOut() {
+    firebase.auth().signOut();
+    this.setState({
+      userExists: false
+    });
+    console.log("you've logged out");
+  };
 
   handleClose() {
     // Modal close function
     this.setState({
       show: false,
-      submitted: false
     });
   };
 
@@ -110,10 +104,10 @@ class Home extends Component {
     const { email, password, error } = this.state;
     return (
       <div>
-        <Nav user={this.state.user}>
+        <Nav>
           {
             this.state.userExists === true ?
-              <Button bsStyle="primary">Poop</Button>
+              <Button bsStyle="primary" onClick={this.logOut}>Logout</Button>
               :
               <Button bsStyle="primary" onClick={this.handleShow}>Login</Button>
           }
@@ -130,12 +124,14 @@ class Home extends Component {
                 user={this.state.user}
                 userID={this.state.userID}
                 ign={this.state.ign}
+                admin={this.state.admin}
               />
             </Grid>
             :
             <Grid>
-              <Button onClick={this.handleShow}>Login</Button>
-              <Modal show={this.state.show} onHide={this.handleClose}>
+              {/* <Button onClick={this.handleShow}>Login</Button> */}
+              <Registration />
+              <Modal show={this.state.show} onHide={this.handleClose} backdrop="static" keyboard={false}>
                 {
                   this.state.userExists === false ?
                     <Modal.Body>
@@ -236,11 +232,11 @@ class Home extends Component {
 
                 }
 
-                <Modal.Footer>
+                {/* <Modal.Footer>
                   <Button onClick={this.handleClose}>Close</Button>
-                </Modal.Footer>
+                </Modal.Footer> */}
               </Modal>
-              <Registration />
+              {/* <Registration /> */}
             </Grid>
         }
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Row, Col, Modal, Label, Button, FormGroup, InputGroup, Form, FormControl, Glyphicon, Popover, OverlayTrigger } from "react-bootstrap";
+import { Modal, Jumbotron, Label, Button, FormGroup, InputGroup, Form, FormControl } from "react-bootstrap";
 import firebase, { auth } from "../../utils/firebase"
 
 class Registration extends React.Component {
@@ -89,7 +89,21 @@ class Registration extends React.Component {
         return (
 
             <div>
-                <Button style={{ marginRight: 5 }} onClick={this.handleShow}>New Account</Button>
+                {
+                    this.state.registrationSuccess === false ?
+                        <Jumbotron className="text-center">
+                            <h3>Welcome to Mosjoandy's</h3>
+                            <h3>SQI Hunting Board!</h3>
+                            <p>To access the hunting quests, please login, or register</p>
+                            <Button style={{ marginRight: 5 }} bsStyle="primary" onClick={this.handleShow}>New Account</Button>
+                        </Jumbotron>
+                        :
+                        <Jumbotron className="text-center">
+                            <h3>Thanks for registering!</h3>
+
+                            <p>To access the hunting quests, please login!</p>
+                        </Jumbotron>
+                }
                 <Modal show={this.state.show} onHide={this.handleClose}>
                     {
                         this.state.registrationSuccess === false ?

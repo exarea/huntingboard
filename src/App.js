@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 // import { Grid, Button } from "react-bootstrap";
 import './App.css';
 // import Nav from "./Components/Nav";
-import firebase, { auth, googleProvider } from "./utils/firebase";
+import { auth, googleProvider } from "./utils/firebase";
 
 import Home from "./Pages/Home/Home";
 // import Board from "./Pages/Board/Board";
@@ -56,9 +56,6 @@ class App extends Component {
       <Router>
         <div>
           <Home />
-
-
-
           {/* <Nav user={this.state.user}>
             {
               this.state.user ?
@@ -80,8 +77,6 @@ class App extends Component {
                 <Registration />
               </Grid>
           } */}
-
-
 
           {/* <Switch>
             <Route exact path="/" render={() => */}
