@@ -54,6 +54,11 @@ class Registration extends React.Component {
                 });
                 console.log("Registration Successful");
                 this.setState({ registrationSuccess: true });
+                firebase.auth().currentUser.sendEmailVerification().then(function () {
+                    console.log("Verification Email Sent");
+                }, function (error) {
+                    console.log(error)
+                });
                 setTimeout(() => {
                     this.setState({ show: false });
                 }, 3000);
@@ -61,6 +66,8 @@ class Registration extends React.Component {
             .catch((error) => {
                 this.setState({ error: error });
             });
+
+
     };
 
     handleClose() {

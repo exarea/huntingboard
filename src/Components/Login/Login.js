@@ -113,7 +113,7 @@ class Login extends React.Component {
                                         <br />
                                         {
                                             error ?
-                                                (<div>{error.message}</div>)
+                                                (<div>{error.message} <Button onClick={this.handleClose}>Close</Button></div>)
                                                 :
                                                 null
                                         }
@@ -122,11 +122,15 @@ class Login extends React.Component {
                                             this.state.spinnerShow === true && error === null ?
                                                 <img style={{ width: 90, height: 75 }} src={require("../../data/loading.gif")} alt="spins" />
                                                 :
-                                                <Button
-                                                    type="submit"
-                                                    value="Submit">
-                                                    Log In
+                                                <div>
+                                                    <Button
+                                                        type="submit"
+                                                        value="Submit">
+                                                        Log In
                                                 </Button>
+                                                    <Button onClick={this.handleClose}>Close</Button>
+                                                </div>
+
                                         }
                                     </FormGroup>
                                 </Form>
@@ -164,7 +168,7 @@ class Login extends React.Component {
                                         <br />
                                         {
                                             error ?
-                                                (<div>{error.message}</div>)
+                                                (<div>{error.message} <Button onClick={this.handleClose}>Close</Button></div>)
                                                 :
                                                 null
                                         }
@@ -180,10 +184,15 @@ class Login extends React.Component {
                             </Modal.Body>
 
                     }
+                    {
+                        this.state.error !== null ?
+                            <Modal.Footer>
+                                <Button onClick={this.handleClose}>Close</Button>
+                            </Modal.Footer>
+                            :
+                            null
+                    }
 
-                    <Modal.Footer>
-                        <Button onClick={this.handleClose}>Close</Button>
-                    </Modal.Footer>
                 </Modal>
             </div>
         );

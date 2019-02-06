@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Board from "../../Pages/Board/Board";
 import RequestModal from "../../Components/RequestModal/RequestModal";
 import Registration from "../../Components/Registration/Registration";
+import Verify from "../../Components/Verify/Verify";
 // import Logout from "../../Components/Logout/Logout";
-import { Grid, Modal, Label, Button, FormGroup, InputGroup, Form, FormControl } from "react-bootstrap";
+import { Grid, Modal, Jumbotron, Col, Row, Label, Button, FormGroup, InputGroup, Form, FormControl } from "react-bootstrap";
 import Nav from "../../Components/Nav";
 import firebase from "../../utils/firebase";
 
@@ -17,6 +18,7 @@ class Home extends Component {
 
       user: null,
       ign: null,
+      verified: false,
       userExists: false,
       userID: "",
       userPhoto: "",
@@ -28,8 +30,6 @@ class Home extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.logOut = this.logOut.bind(this);
-
-    this.spinnyThing = this.spinnyThing.bind(this);
   };
 
   handleChange = (event) => {
@@ -45,13 +45,17 @@ class Home extends Component {
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((result) => {
         var user = result.user;
-        this.setState({ userID: user.uid });
+        this.setState({
+          serID: user.uid,
+          verified: user.emailVerified
+        });
+        // console.log("email verified? " + this.state.verified);
 
         var that = this;
         firebase.database().ref("users/" + this.state.userID).on("value", function (snapshot) {
           var userIGN = (snapshot.val().ign);
           var admin = (snapshot.val().admin);
-          that.setState({ 
+          that.setState({
             ign: userIGN,
             admin: admin,
           }); // WORKS - sets that.state.ign to ign from database 
@@ -63,8 +67,16 @@ class Home extends Component {
             spinnerShow: false,
             userExists: true,
             show: false,
+            error: null,
           });
         }, 3000);
+        setTimeout(() => {
+          firebase.auth().signOut();
+          this.setState({
+            userExists: false
+          });
+        }, 3600000 //1hour timeout
+        );
       })
       .catch((error) => {
         this.setState({ error: error });
@@ -93,13 +105,6 @@ class Home extends Component {
     });
   };
 
-  spinnyThing() {
-    this.setState({
-      spinnerShow: true
-    });
-  };
-
-
   render() {
     const { email, password, error } = this.state;
     return (
@@ -114,19 +119,41 @@ class Home extends Component {
         </Nav>
         {
           this.state.userExists === true ?
-            <Grid>
-              <RequestModal
-                user={this.state.user}
-                userID={this.state.userID}
-                ign={this.state.ign}
-              />
-              <Board
-                user={this.state.user}
-                userID={this.state.userID}
-                ign={this.state.ign}
-                admin={this.state.admin}
-              />
-            </Grid>
+            <div>
+              {
+                this.state.verified === false ?
+                  <Grid>
+                    <Row>
+                      <Col xs={12}>
+                        <Jumbotron className="text-center">
+                          <Verify />
+                          <br />
+                          <Button
+                            bsStyle="warning"
+                            onClick={this.logOut}
+                          >
+                            Re-login
+                          </Button>
+                        </Jumbotron>
+                      </Col>
+                    </Row>
+                  </Grid>
+                  :
+                  <Grid>
+                    <RequestModal
+                      user={this.state.user}
+                      userID={this.state.userID}
+                      ign={this.state.ign}
+                    />
+                    <Board
+                      user={this.state.user}
+                      userID={this.state.userID}
+                      ign={this.state.ign}
+                      admin={this.state.admin}
+                    />
+                  </Grid>
+              }
+            </div>
             :
             <Grid>
               {/* <Button onClick={this.handleShow}>Login</Button> */}
@@ -143,7 +170,7 @@ class Home extends Component {
                             <FormControl
                               type="text"
                               name="email"
-                              placeholder="Email"
+                              placeholder="your@email.com"
                               value={email}
                               onChange={this.handleChange}
                               required
@@ -224,7 +251,7 @@ class Home extends Component {
                             value="Submit"
                             disabled>
                             Log in Successful
-                                        </Button>
+                          </Button>
 
                         </FormGroup>
                       </Form>
@@ -232,17 +259,22 @@ class Home extends Component {
 
                 }
 
-                {/* <Modal.Footer>
-                  <Button onClick={this.handleClose}>Close</Button>
-                </Modal.Footer> */}
+                {this.state.error === null ?
+
+                  null
+                  :
+                  <Modal.Footer>
+                    <Button onClick={this.handleClose}>Close</Button>
+                  </Modal.Footer>
+                }
+
               </Modal>
               {/* <Registration /> */}
             </Grid>
         }
       </div>
     );
-  }
-
+  };
 };
 
 export default Home;

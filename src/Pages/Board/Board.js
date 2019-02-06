@@ -246,7 +246,7 @@ class Board extends React.Component {
                                                             <Col xs={12} className="text-center">
                                                                 <p>Item:{" "}
                                                                     <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}
-                                                                    <a href={huntingRequestList.itemLink}>{huntingRequestList.item}</a>
+                                                                    <a href={huntingRequestList.itemLink} target="_blank" rel="noopener noreferrer">{huntingRequestList.item}</a>
                                                                 </p>
                                                                 <p>Quantity: <b>{huntingRequestList.quantity}</b></p>
                                                                 <p>Payout: <b>{huntingRequestList.payout}</b></p>
@@ -423,7 +423,7 @@ class Board extends React.Component {
                                                                 <Col xs={12} className="text-center">
                                                                     <p>Item:{" "}
                                                                         <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}
-                                                                        <a href={huntingRequestList.itemLink}>{huntingRequestList.item}</a>
+                                                                        <a href={huntingRequestList.itemLink} target="_blank" rel="noopener noreferrer">{huntingRequestList.item}</a>
                                                                     </p>
                                                                     <p>Quantity: <b>{huntingRequestList.quantity}</b></p>
                                                                     <p>Payout: <b>{huntingRequestList.payout}</b></p>
