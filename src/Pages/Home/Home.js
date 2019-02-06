@@ -46,8 +46,8 @@ class Home extends Component {
       .then((result) => {
         var user = result.user;
         this.setState({
-          serID: user.uid,
-          verified: user.emailVerified
+          userID: user.uid,
+          verified: user.emailVerified,
         });
         // console.log("email verified? " + this.state.verified);
 
@@ -55,6 +55,7 @@ class Home extends Component {
         firebase.database().ref("users/" + this.state.userID).on("value", function (snapshot) {
           var userIGN = (snapshot.val().ign);
           var admin = (snapshot.val().admin);
+          // console.log(snapshot.val());
           that.setState({
             ign: userIGN,
             admin: admin,
