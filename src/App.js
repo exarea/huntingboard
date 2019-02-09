@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import { Grid, Button } from "react-bootstrap";
 import './App.css';
 // import Nav from "./Components/Nav";
-import { auth, googleProvider } from "./utils/firebase";
+// import { auth, googleProvider } from "./utils/firebase";
 
 import Home from "./Pages/Home/Home";
 import NoMatch from "./Pages/NoMatch/NoMatch";
+import Footer from "./Components/Footer/Footer";
 // import Board from "./Pages/Board/Board";
 // import RequestModal from "./Components/RequestModal/RequestModal";
 // import Registration from "./Components/Registration/Registration";
@@ -27,30 +28,30 @@ class App extends Component {
       userPhoto: "",
       admin: false,
     };
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
+    // this.login = this.login.bind(this);
+    // this.logout = this.logout.bind(this);
 
   };
 
-    logout() {
-      auth.signOut().then(() => {
-        this.setState({ user: null });
-        this.setState({ userExists: false })
-        this.setState({ userID: "" });
-        this.setState({ userPhoto: "" });
-      });
-    };
+  //   logout() {
+  //     auth.signOut().then(() => {
+  //       this.setState({ user: null });
+  //       this.setState({ userExists: false })
+  //       this.setState({ userID: "" });
+  //       this.setState({ userPhoto: "" });
+  //     });
+  //   };
 
-    login() {
-      auth.signInWithPopup(googleProvider).then((result) => {
-        console.log(result.user);
-        var user = result.user;
-        this.setState({ user: user.displayName });
-        this.setState({ userExists: true })
-        this.setState({ userID: user.uid });
-        this.setState({ userPhoto: user.photoURL });
-      });
-  };
+  //   login() {
+  //     auth.signInWithPopup(googleProvider).then((result) => {
+  //       console.log(result.user);
+  //       var user = result.user;
+  //       this.setState({ user: user.displayName });
+  //       this.setState({ userExists: true })
+  //       this.setState({ userID: user.uid });
+  //       this.setState({ userPhoto: user.photoURL });
+  //     });
+  // };
 
   render() {
     return (
@@ -60,6 +61,7 @@ class App extends Component {
             <Route exact path ="/" render={() => <Home/> } /> 
             <Route component={NoMatch} />
           </Switch>
+          <Footer />
           {/* <Nav user={this.state.user}>
             {
               this.state.user ?
