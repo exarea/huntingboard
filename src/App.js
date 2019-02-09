@@ -8,6 +8,7 @@ import './App.css';
 import Home from "./Pages/Home/Home";
 import NoMatch from "./Pages/NoMatch/NoMatch";
 import Footer from "./Components/Footer/Footer";
+import Help from "./Pages/Help/Help";
 // import Board from "./Pages/Board/Board";
 // import RequestModal from "./Components/RequestModal/RequestModal";
 // import Registration from "./Components/Registration/Registration";
@@ -59,6 +60,7 @@ class App extends Component {
         <div>
           <Switch>
             <Route exact path ="/" render={() => <Home/> } /> 
+            <Route exact path ="/Help" render={() => <Help />} />
             <Route component={NoMatch} />
           </Switch>
           <Footer />

@@ -1,8 +1,8 @@
-#updateLink {
+.updateLink {
     cursor: pointer;
 }
 
-#versionModal {
-    bottom: 5%;
-    left: 50%;
+.updateLink:hover {
+   text-decoration: underline;
+   color: grey;
 }

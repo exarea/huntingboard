@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { Row, Col } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import Version from "../Version/Version";
 
 // import {Navbar} from "react-bootstrap";
@@ -21,17 +21,20 @@ const Footer = () => (
     // </Navbar>
 
     <div id="footer" className="text-center bg-light">
-        <Row>
-            <Col xs={4}>
-                Test Poops left
+        <Grid>
+            <Row>
+                <Col xs={4}>
+                    Fan Site for <a href="https://talonro.com/" target="_blank" rel="noopener noreferrer">TalonRO </a>
+                    {/* <img src={require("../../data/talonro-logo.png")} alt="talonRO logo"/> */}
+                </Col>
+                <Col xs={4}>
+                    © 2019 Mosjoandy
             </Col>
-            <Col xs={4}>
-                © 2014 Mosjoandy
-            </Col>
-            <Col xs={4}>
-                Version 1.0 <span><Version /></span>
-            </Col>
-        </Row>
+                <Col xs={4}>
+                    Version 1.0 <Version />
+                </Col>
+            </Row>
+        </Grid>
     </div>
 )
 

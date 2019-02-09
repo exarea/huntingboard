@@ -1,6 +1,6 @@
 import React from 'react';
 import './Nav.css';
-import { Navbar } from "react-bootstrap";
+import { Navbar, Button } from "react-bootstrap";
 
 const Nav = (props) => (
     <Navbar>
@@ -13,6 +13,7 @@ const Nav = (props) => (
         <Navbar.Collapse >
             <Navbar.Text pullRight>
                 {props.children}
+                <Button href="/Help" target="_blank">Help</Button>
             </Navbar.Text>
         </Navbar.Collapse>
     </Navbar>

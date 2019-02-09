@@ -10,7 +10,7 @@ const NoMatch = () => (
                     <h3>You seem to be lost...</h3>
                     <h1>404 Page Not Found</h1>
                     <br/>
-                    <a href="/"><Button bsStyle="danger"><img src="http://file5.ratemyserver.net/items/small/602.gif" alt="wing" />Butterfly Wing</Button></a>
+                    <a href="/"><Button bsStyle="danger"><img src="https://panel.talonro.com/images/items/small/12324.gif" alt="wing" />Butterfly Wing</Button></a>
                 </Jumbotron>
             </Col>
         </Row>

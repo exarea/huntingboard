@@ -1,4 +1,5 @@
 import React from 'react';
+import "./Version.css";
 import { Modal } from "react-bootstrap";
 
 class Version extends React.Component {
@@ -28,8 +29,8 @@ class Version extends React.Component {
     render() {
         return (
             <div>
-                <a id="updateLink" onClick={this.handleShow}>Updates</a>
-                <Modal show={this.state.show} onHide={this.handleClose} id="versionModal">
+                <div className="updateLink" onClick={this.handleShow}>Updates</div>
+                <Modal show={this.state.show} onHide={this.handleClose} style={{ top: "50%", left: "50%" }}>
                     <Modal.Header closeButton>
                         <Modal.Title>
                             Current Version: 1.0
