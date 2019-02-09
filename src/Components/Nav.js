@@ -13,7 +13,7 @@ const Nav = (props) => (
         <Navbar.Collapse >
             <Navbar.Text pullRight>
                 {props.children}
-                <Button href="/Help" target="_blank">Help</Button>
+                <Button href="/Help" target="_blank" >Help</Button>
             </Navbar.Text>
         </Navbar.Collapse>
     </Navbar>
