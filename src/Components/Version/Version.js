@@ -29,14 +29,17 @@ class Version extends React.Component {
     render() {
         return (
             <div>
-                <div className="updateLink" onClick={this.handleShow}>Updates</div>
+                <div>
+                    <span className="updateLink" onClick={this.handleShow}>Updates</span>
+                </div>
                 <Modal show={this.state.show} onHide={this.handleClose} style={{ top: "50%", left: "50%" }}>
                     <Modal.Header closeButton>
                         <Modal.Title>
-                            Current Version: 1.0
-                    </Modal.Title>
+                            Current Version: 1.1
+                        </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <p>Version 1.1: Footer implementation, version list</p>
                         <p>Version 1.0: Official release, account registrations open!</p>
                         <p>Version 0.1: Beta release, basic functionality, firebase connections</p>
                     </Modal.Body>

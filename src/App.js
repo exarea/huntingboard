@@ -59,8 +59,8 @@ class App extends Component {
       <Router>
         <div>
           <Switch>
-            <Route exact path ="/" render={() => <Home/> } /> 
-            <Route exact path ="/Help" render={() => <Help />} />
+            <Route exact path ="/huntingboard" render={() => <Home/> } /> 
+            <Route exact path ="/help" render={() => <Help />} />
             <Route component={NoMatch} />
           </Switch>
           <Footer />
