@@ -8,7 +8,8 @@ class Board extends React.Component {
     constructor() {
         super()
         this.state = {
-            show: false,
+            show1: false,
+            show2: false,
 
             huntingRequestList: [],
 
@@ -16,8 +17,11 @@ class Board extends React.Component {
             toggleList: false,
             toggleBoxes: true,
         };
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+        this.handleShow1 = this.handleShow1.bind(this);
+        this.handleClose1 = this.handleClose1.bind(this);
+
+        this.handleShow2 = this.handleShow2.bind(this);
+        this.handleClose2 = this.handleClose2.bind(this);
 
         this.acceptRequest = this.acceptRequest.bind(this);
         this.itemSent = this.itemSent.bind(this);
@@ -99,18 +103,33 @@ class Board extends React.Component {
         });
     };
 
-    handleClose() {
+    handleClose1() {
         // Modal close function
         this.setState({
-            show: false,
+            show1: false,
         });
     };
 
-    handleShow(huntingRequestList) {
+    handleShow1(huntingRequestList) {
         // Modal show function
         this.setState({
             id: huntingRequestList.id,
-            show: true
+            show1: true
+        });
+    };
+
+    handleClose2() {
+        // Modal close function
+        this.setState({
+            show2: false,
+        });
+    };
+
+    handleShow2(huntingRequestList) {
+        // Modal show function
+        this.setState({
+            id: huntingRequestList.id,
+            show2: true
         });
     };
 
@@ -190,13 +209,13 @@ class Board extends React.Component {
                                                                                 className="text-right"
                                                                                 bsStyle="danger"
                                                                                 bsSize="xsmall"
-                                                                                onClick={() => { this.handleShow(huntingRequestList) }}>
+                                                                                onClick={() => { this.handleShow1(huntingRequestList) }}>
                                                                                 {" "}X{" "}
                                                                             </Button>
                                                                             :
                                                                             null
                                                                     }
-                                                                    <Modal show={this.state.show} onHide={this.handleClose}>
+                                                                    <Modal show={this.state.show1} onHide={this.handleClose1}>
                                                                         <Modal.Header closeButton>
                                                                             <Modal.Title id="contained-modal-title-sm">Cancel Request</Modal.Title>
                                                                         </Modal.Header>
@@ -211,7 +230,7 @@ class Board extends React.Component {
                                                                                             bsSize="large"
                                                                                             onClick={() => {
                                                                                                 this.cancelRequest(this.state.id)
-                                                                                                this.handleClose()
+                                                                                                this.handleClose1()
                                                                                             }}>
                                                                                             Cancel My Request
                                                                                         </Button>
@@ -304,7 +323,34 @@ class Board extends React.Component {
                                                                                             <span>
                                                                                                 {/* if the quest has not been accepted, show accept quest button */
                                                                                                     huntingRequestList.accepted === false ?
-                                                                                                        <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                                                                                        <div>
+                                                                                                            <Modal show={this.state.show2} onHide={this.handleClose2}>
+                                                                                                                <Modal.Header closeButton>
+                                                                                                                    <Modal.Title id="contained-modal-title-sm">Accept Request</Modal.Title>
+                                                                                                                </Modal.Header>
+                                                                                                                <Modal.Body>
+                                                                                                                    <Row>
+                                                                                                                        <Col xs={12} className="text-center">
+                                                                                                                            <div>Confirm accepting of this request</div>
+                                                                                                                            <br />
+                                                                                                                            <div>
+                                                                                                                                <Button
+                                                                                                                                    bsStyle="success"
+                                                                                                                                    bsSize="large"
+                                                                                                                                    onClick={() => {
+                                                                                                                                        this.acceptRequest(this.state.id)
+                                                                                                                                        this.handleClose2()
+                                                                                                                                    }}>
+                                                                                                                                    Accept this quest
+                                                                                                                        </Button>
+                                                                                                                            </div>
+                                                                                                                        </Col>
+                                                                                                                    </Row>
+                                                                                                                </Modal.Body>
+                                                                                                            </Modal>
+                                                                                                            <Button onClick={() => { this.handleShow2(huntingRequestList) }}>Accept</Button>
+                                                                                                            {/* <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button> */}
+                                                                                                        </div>
                                                                                                         :
                                                                                                         <span>
                                                                                                             {/* if the logged in user is the farmer, show that they have accepted the quest */
@@ -366,13 +412,13 @@ class Board extends React.Component {
                                                                                 <Button
                                                                                     bsStyle="danger"
                                                                                     bsSize="xsmall"
-                                                                                    onClick={() => { this.handleShow(huntingRequestList) }}>
+                                                                                    onClick={() => { this.handleShow1(huntingRequestList) }}>
                                                                                     {" "}X{" "}
                                                                                 </Button>
                                                                                 :
                                                                                 null
                                                                         }
-                                                                        <Modal show={this.state.show} onHide={this.handleClose}>
+                                                                        <Modal show={this.state.show1} onHide={this.handleClose1}>
                                                                             <Modal.Header closeButton>
                                                                                 <Modal.Title id="contained-modal-title-sm">Cancel Request</Modal.Title>
                                                                             </Modal.Header>
@@ -387,7 +433,7 @@ class Board extends React.Component {
                                                                                                 bsSize="large"
                                                                                                 onClick={() => {
                                                                                                     this.cancelRequest(this.state.id)
-                                                                                                    this.handleClose()
+                                                                                                    this.handleClose1()
                                                                                                 }}>
                                                                                                 Cancel My Request
                                                                                         </Button>
@@ -483,7 +529,34 @@ class Board extends React.Component {
                                                                                             <span>
                                                                                                 {/* if the quest has not been accepted, show accept quest button */
                                                                                                     huntingRequestList.accepted === false ?
-                                                                                                        <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button>
+                                                                                                        <div>
+                                                                                                            <Modal show={this.state.show2} onHide={this.handleClose2}>
+                                                                                                                <Modal.Header closeButton>
+                                                                                                                    <Modal.Title id="contained-modal-title-sm">Accept Request</Modal.Title>
+                                                                                                                </Modal.Header>
+                                                                                                                <Modal.Body>
+                                                                                                                    <Row>
+                                                                                                                        <Col xs={12} className="text-center">
+                                                                                                                            <div>Confirm accepting of this request</div>
+                                                                                                                            <br />
+                                                                                                                            <div>
+                                                                                                                                <Button
+                                                                                                                                    bsStyle="success"
+                                                                                                                                    bsSize="large"
+                                                                                                                                    onClick={() => {
+                                                                                                                                        this.acceptRequest(this.state.id)
+                                                                                                                                        this.handleClose2()
+                                                                                                                                    }}>
+                                                                                                                                    Accept this quest
+                                                                                                                        </Button>
+                                                                                                                            </div>
+                                                                                                                        </Col>
+                                                                                                                    </Row>
+                                                                                                                </Modal.Body>
+                                                                                                            </Modal>
+                                                                                                            <Button onClick={() => { this.handleShow2(huntingRequestList) }}>Accept</Button>
+                                                                                                            {/* <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button> */}
+                                                                                                        </div>
                                                                                                         :
                                                                                                         <span>
                                                                                                             {/* if the logged in user is the farmer, show that they have accepted the quest */

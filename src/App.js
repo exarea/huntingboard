@@ -5,6 +5,7 @@ import './App.css';
 // import Nav from "./Components/Nav";
 // import { auth, googleProvider } from "./utils/firebase";
 
+import WelcomeMat from "./Pages/WelcomeMat/WelcomeMat";
 import Home from "./Pages/Home/Home";
 import NoMatch from "./Pages/NoMatch/NoMatch";
 import Footer from "./Components/Footer/Footer";
@@ -59,9 +60,11 @@ class App extends Component {
       <Router>
         <div>
           <Switch>
-            <Route exact path ="/huntingboard" render={() => <Home/> } /> 
-            <Route exact path ="/help" render={() => <Help />} />
+            <Route exact path="/" render={() => <WelcomeMat />} />
+            <Route exact path="/huntingboard" render={() => <Home />} />
+            <Route exact path="/help" render={() => <Help />} />
             <Route component={NoMatch} />
+            {/* <Redirect from="/" to="/huntingboard" /> */}
           </Switch>
           <Footer />
           {/* <Nav user={this.state.user}>
