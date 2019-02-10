@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Board from "../../Pages/Board/Board";
+import Footer from "../../Components/Footer/Footer";
 import RequestModal from "../../Components/RequestModal/RequestModal";
 import Registration from "../../Components/Registration/Registration";
 import Verify from "../../Components/Verify/Verify";
@@ -273,6 +274,7 @@ class Home extends Component {
               {/* <Registration /> */}
             </Grid>
         }
+        <Footer />
       </div>
     );
   };

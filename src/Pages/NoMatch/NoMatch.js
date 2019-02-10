@@ -7,7 +7,7 @@ const NoMatch = () => (
             <Col xs={12}>
                 <div style={{ marginBottom: 100 }} />
                 <Jumbotron className="text-center">
-                    <h3>You seem to be lost...</h3>
+                    <h3>Got lost in the Hidden Temple</h3>
                     <h1>404 Page Not Found</h1>
                     <br/>
                     <a href="/"><Button bsStyle="danger"><img src="https://panel.talonro.com/images/items/small/12324.gif" alt="wing" />Butterfly Wing</Button></a>

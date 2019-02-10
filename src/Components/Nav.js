@@ -12,7 +12,7 @@ const Nav = (props) => (
         </Navbar.Header>
         <Navbar.Collapse >
             <Navbar.Text pullRight>
-                <Button style={{ marginRight: 5 }} href="/Help" target="_blank" >Help</Button>
+                <Button style={{ marginRight: 5 }} href="/Help" target="_blank" rel="noopener noreferrer">Help</Button>
                 {props.children}
             </Navbar.Text>
         </Navbar.Collapse>

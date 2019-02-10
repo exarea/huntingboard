@@ -9,15 +9,16 @@ const Footer = () => (
         <Grid>
             <Row>
                 <Col xs={4}>
-                    <div>Fan Site for</div> 
-                    <a href="https://talonro.com/" target="_blank" rel="noopener noreferrer">TalonRO </a>
+                    <div>Community{" "}<a href="https://talonro.com/" target="_blank" rel="noopener noreferrer">TalonRO</a>{" "}Site</div>
+        
                     {/* <img src={require("../../data/talonro-logo.png")} alt="talonRO logo"/> */}
                 </Col>
                 <Col xs={4}>
                     © 2019 Mosjoandy
             </Col>
                 <Col xs={4}>
-                    Version 1.0 <Version />
+                    <div>Version 1.0 <Version /></div>
+                   
                 </Col>
             </Row>
         </Grid>
