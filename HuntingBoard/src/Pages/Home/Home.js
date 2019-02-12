@@ -77,7 +77,9 @@ class Home extends Component {
           this.setState({
             userExists: false
           });
-        }, 3600000 //1hour timeout
+        },
+          // 3600000 //1hour timeout
+          600000 //10 minute timeout
         );
       })
       .catch((error) => {
