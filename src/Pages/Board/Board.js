@@ -2,6 +2,7 @@ import React from 'react';
 import "./Board.css";
 import { Grid, Row, Col, Panel, Button, Modal, PanelGroup, Glyphicon } from "react-bootstrap";
 import firebase from "../../utils/firebase";
+import axios from "axios";
 
 class Board extends React.Component {
 
@@ -133,16 +134,19 @@ class Board extends React.Component {
         });
     };
 
-    acceptRequest(huntingRequestList) {
+    async acceptRequest(huntingRequestList) {
         // Pass huntingRequestList argument, make reference and update specific object
         // console.log("this is the id of the item accepted" + huntingRequestList);
-        firebase.database().ref("huntingRequest/" + huntingRequestList).update({
-            // update states accordingly and push firebase
-            farmer: this.props.ign,
-            accepted: true,
-            status: "In Progress",
-            statusColor: "warning"
-        });
+        // firebase.database().ref("huntingRequest/" + huntingRequestList).update({
+        //     // update states accordingly and push firebase
+        //     farmer: this.props.ign,
+        //     accepted: true,
+        //     status: "In Progress",
+        //     statusColor: "warning"
+        // });
+        const farmer = this.props.ign;
+        const accepted = true;
+        const acceptance = await axios.post("/api/form", { farmer, accepted })
     };
 
     itemSent(huntingRequestList) {
