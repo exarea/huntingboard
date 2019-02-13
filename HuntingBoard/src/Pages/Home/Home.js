@@ -56,9 +56,11 @@ class Home extends Component {
         firebase.database().ref("users/" + this.state.userID).on("value", function (snapshot) {
           var userIGN = (snapshot.val().ign);
           var admin = (snapshot.val().admin);
+          var userEmail = (snapshot.val().email);
           // console.log(snapshot.val());
           that.setState({
             ign: userIGN,
+            email: userEmail,
             admin: admin,
           }); // WORKS - sets that.state.ign to ign from database 
         }) // Async issue, - use setTimeout!
@@ -72,15 +74,6 @@ class Home extends Component {
             error: null,
           });
         }, 3000);
-        setTimeout(() => {
-          firebase.auth().signOut();
-          this.setState({
-            userExists: false
-          });
-        },
-          // 3600000 //1hour timeout
-          600000 //10 minute timeout
-        );
       })
       .catch((error) => {
         this.setState({ error: error });
@@ -148,12 +141,14 @@ class Home extends Component {
                       user={this.state.user}
                       userID={this.state.userID}
                       ign={this.state.ign}
+                      email={this.state.email}
                     />
                     <Board
                       user={this.state.user}
                       userID={this.state.userID}
                       ign={this.state.ign}
                       admin={this.state.admin}
+                      email={this.state.email}
                     />
                   </Grid>
               }

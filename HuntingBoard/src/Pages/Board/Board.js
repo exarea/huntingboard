@@ -6,8 +6,8 @@ import axios from "axios";
 
 class Board extends React.Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             show1: false,
             show2: false,
@@ -15,6 +15,7 @@ class Board extends React.Component {
             huntingRequestList: [],
 
             admin: "",
+            email: "",
             toggleList: false,
             toggleBoxes: true,
         };
@@ -145,8 +146,10 @@ class Board extends React.Component {
         //     statusColor: "warning"
         // });
         const farmer = this.props.ign;
-        const accepted = true;
-        const acceptance = await axios.post("/api/form", { farmer, accepted })
+        const email = this.props.email;
+        console.log(huntingRequestList);
+        console.log(email);
+        const acceptance = await axios.post("/api/form", { farmer, email })
     };
 
     itemSent(huntingRequestList) {
