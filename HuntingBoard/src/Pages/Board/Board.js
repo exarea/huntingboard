@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Board.css";
-import { Grid, Row, Col, Panel, Button, Modal, PanelGroup, Glyphicon } from "react-bootstrap";
+import { Grid, Row, Col, Panel, Button, Modal } from "react-bootstrap";
 import firebase from "../../utils/firebase";
 import axios from "axios";
 
@@ -16,8 +16,10 @@ class Board extends React.Component {
 
             admin: "",
             email: "",
+            getuserEmail: "",
             questUserID: "",
-            toggleList: false,
+            getfarmerID: "",
+            // toggleList: false,
             toggleBoxes: true,
         };
         this.handleShow1 = this.handleShow1.bind(this);
@@ -32,8 +34,8 @@ class Board extends React.Component {
         this.cancelRequest = this.cancelRequest.bind(this);
         this.destroyRequest = this.destroyRequest.bind(this);
 
-        this.toggleList = this.toggleList.bind(this);
-        this.toggleBoxes = this.toggleBoxes.bind(this);
+        // this.toggleList = this.toggleList.bind(this);
+        // this.toggleBoxes = this.toggleBoxes.bind(this);
     };
 
     componentDidMount() {
@@ -77,19 +79,19 @@ class Board extends React.Component {
         firebase.database().ref('huntingRequest').off();
     }
 
-    toggleList() {
-        this.setState({
-            toggleList: true,
-            toggleBoxes: false
-        });
-    };
+    // toggleList() {
+    //     this.setState({
+    //         toggleList: true,
+    //         toggleBoxes: false
+    //     });
+    // };
 
-    toggleBoxes() {
-        this.setState({
-            toggleList: false,
-            toggleBoxes: true
-        });
-    };
+    // toggleBoxes() {
+    //     this.setState({
+    //         toggleList: false,
+    //         toggleBoxes: true
+    //     });
+    // };
 
     destroyRequest(huntingRequestList) {
         // console.log("this is the id of the item being DESTROYED" + huntingRequestList);
@@ -139,41 +141,34 @@ class Board extends React.Component {
     async acceptRequest(huntingRequestList) {
         // Pass huntingRequestList argument, make reference and update specific object
         // console.log("this is the id of the item accepted" + huntingRequestList);
-        // firebase.database().ref("huntingRequest/" + huntingRequestList).update({
-        //     // update states accordingly and push firebase
-        //     farmer: this.props.ign,
-        //     accepted: true,
-        //     status: "In Progress",
-        //     statusColor: "warning"
-        // });
-        var getuserID = [];
-        // var usersAll = [];
-        
-        firebase.database().ref("huntingRequest/").on("value").then( function (snapshot) {
-            getuserID = (snapshot.val())
-
-        }, function(error) {
-            return console.log(error);
+        firebase.database().ref("huntingRequest/" + huntingRequestList).update({
+            // update states accordingly and push firebase
+            farmer: this.props.ign,
+            accepted: true,
+            status: "In Progress",
+            statusColor: "warning",
+            farmerID: this.props.email
         });
 
-        console.log("owner of quest: " + getuserID[huntingRequestList].userID);
-        // const questOwner = getuserID[huntingRequestList].userID
-
-        // var usersAll = [];
-        // firebase.database().ref("users/").on("value", function (snapshot) {
-        //     return usersAll = (snapshot.val())
-        //     // console.log("firebase user reference: " + snapshot.val().email)
-        //     // const questOwnerEmail = snapshot.val().email
-        // });
-        // console.log(usersAll[questOwner])
-        // API Call to backend for email notification
-        // const farmer = this.props.ign;
-        // const email = questOwnerEmail
-        // const acceptance = await axios.post("/api/acceptQuest", { farmer, email })
-
+        var that = this;
+        firebase.database().ref("huntingRequest/").once("value").then(function (snapshot) {
+            const getuserID = snapshot.val()
+            const userID = (getuserID[huntingRequestList].userID)
+            firebase.database().ref("users/" + userID).once("value").then(function (snapshot) {
+                const getuserEmail = snapshot.val()
+                that.setState({ getuserEmail: getuserEmail.email })
+            });
+        });
+        setTimeout(() => {
+            // API Call to backend for email notification
+            console.log("sending email...")
+            const farmer = this.props.ign;
+            const email = this.state.getuserEmail;
+            axios.post("/api/acceptQuest", { farmer, email })
+        }, 3000);
     };
 
-    itemSent(huntingRequestList) {
+    async itemSent(huntingRequestList) {
         // Pass huntingRequestList argument, make reference to specific object
         // console.log("this is the id of the item sent" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
@@ -181,9 +176,26 @@ class Board extends React.Component {
             itemSent: true,
             status: "Items Sent"
         });
+
+        var that = this;
+        firebase.database().ref("huntingRequest/").once("value").then(function (snapshot) {
+            const getuserID = snapshot.val()
+            const userID = (getuserID[huntingRequestList].userID)
+            firebase.database().ref("users/" + userID).once("value").then(function (snapshot) {
+                const getuserEmail = snapshot.val()
+                that.setState({ getuserEmail: getuserEmail.email })
+            });
+        });
+        setTimeout(() => {
+            // API Call to backend for email notification
+            console.log("sending email...")
+            const farmer = this.props.ign;
+            const email = this.state.getuserEmail;
+            axios.post("/api/sentItems", { farmer, email })
+        }, 3000);
     };
 
-    payoutSent(huntingRequestList) {
+    async payoutSent(huntingRequestList) {
         // Pass huntingRequestList argument, make reference to specific object
         // console.log("this is the id of the payout sent" + huntingRequestList);
         firebase.database().ref("huntingRequest/" + huntingRequestList).update({
@@ -192,6 +204,20 @@ class Board extends React.Component {
             status: "Complete",
             statusColor: "primary"
         });
+
+        var that = this;
+        firebase.database().ref("huntingRequest/").once("value").then(function(snapshot) {
+            const getFarmerID = snapshot.val()
+            // console.log(getFarmerID[huntingRequestList].farmerID);
+            that.setState({ getfarmerID: getFarmerID[huntingRequestList].farmerID })
+        });
+        setTimeout(() => {
+            // API Call to backend for email notification
+            console.log("sending email...")
+            const payee = this.props.ign;
+            const email = this.state.getfarmerID;
+            axios.post("/api/sentPayment", { payee, email })
+        }, 3000);
     };
 
     render() {
@@ -200,7 +226,7 @@ class Board extends React.Component {
                 <Row className="show-grid">
                     <Col md={9}>
                         <Panel>
-                            <Panel.Heading bsStyle="primary" className="text-right">
+                            {/* <Panel.Heading bsStyle="primary" className="text-right">
                                 <Button onClick={this.toggleList}>
                                     <Glyphicon style={{ fontSize: 15 }} glyph="th-list" />
                                 </Button>
@@ -210,217 +236,9 @@ class Board extends React.Component {
                                 </Button>
 
                             </Panel.Heading>
-                            <br />
+                            <br /> */}
                             <Panel.Body>
-                                {this.state.toggleList === true ?
-                                    <PanelGroup accordian="true" id="accordian">
-                                        {/* Show the entire array of huntingRequestList BACKWARDS */
-                                            this.state.huntingRequestList.slice(0).reverse().map((huntingRequestList, index) => (
-                                                <Panel
-                                                    eventKey={index}
-                                                    key={index}
-                                                    id={huntingRequestList.id}
-                                                    bsStyle={(huntingRequestList.statusColor)}>
-                                                    <Panel.Heading>
-                                                        <Panel.Title toggle>
-                                                            <Row>
-                                                                <Col xs={8}>
-                                                                    <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}{huntingRequestList.item}
-                                                                </Col>
-                                                                <Col xs={3} className="text-right">
-                                                                    {huntingRequestList.payout}
-                                                                </Col>
-                                                                <Col xs={1}>
-                                                                    {/* if the logged in user owns the quest, has button to cancel quest*/
-                                                                        huntingRequestList.userID === this.props.userID && huntingRequestList.status !== "Closed" ?
-                                                                            <Button
-                                                                                className="text-right"
-                                                                                bsStyle="danger"
-                                                                                bsSize="xsmall"
-                                                                                onClick={() => { this.handleShow1(huntingRequestList) }}>
-                                                                                {" "}X{" "}
-                                                                            </Button>
-                                                                            :
-                                                                            null
-                                                                    }
-                                                                    <Modal show={this.state.show1} onHide={this.handleClose1}>
-                                                                        <Modal.Header closeButton>
-                                                                            <Modal.Title id="contained-modal-title-sm">Cancel Request</Modal.Title>
-                                                                        </Modal.Header>
-                                                                        <Modal.Body>
-                                                                            <Row>
-                                                                                <Col xs={12} className="text-center">
-                                                                                    <div>Confirm cancellation of your request</div>
-                                                                                    <br />
-                                                                                    <div>
-                                                                                        <Button
-                                                                                            bsStyle="danger"
-                                                                                            bsSize="large"
-                                                                                            onClick={() => {
-                                                                                                this.cancelRequest(this.state.id)
-                                                                                                this.handleClose1()
-                                                                                            }}>
-                                                                                            Cancel My Request
-                                                                                        </Button>
-                                                                                    </div>
-                                                                                </Col>
-                                                                            </Row>
-                                                                        </Modal.Body>
-                                                                    </Modal>
-                                                                </Col>
-                                                            </Row>
-                                                        </Panel.Title>
-                                                    </Panel.Heading>
-                                                    <Panel.Body collapsible={true}>
-                                                        <Row>
-                                                            <Col xs={12} className="text-center">
-                                                                <div>
-                                                                    <p>{huntingRequestList.date}</p>
-                                                                    <h4>{huntingRequestList.status}</h4>
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <Row>
-                                                            <Col xs={6} className="text-left">
-                                                                <p>Payee:<br /><b>{huntingRequestList.poster}</b></p>
-                                                            </Col>
-                                                            <Col xs={6} className="text-right">
-                                                                <p>Accepted By:<br /><b>{huntingRequestList.farmer}</b></p>
-                                                            </Col>
-                                                        </Row>
-                                                        <br />
-                                                        <Row>
-                                                            <Col xs={12} className="text-center">
-                                                                <p>Item:{" "}
-                                                                    <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}
-                                                                    <a href={huntingRequestList.itemLink} target="_blank" rel="noopener noreferrer">{huntingRequestList.item}</a>
-                                                                </p>
-                                                                <p>Quantity: <b>{huntingRequestList.quantity}</b></p>
-                                                                <p>Payout: <b>{huntingRequestList.payout}</b></p>
-                                                            </Col>
-                                                        </Row>
-                                                        {/* Begin button display area  */}
-                                                        <Panel.Footer className="text-center">
-                                                            {/* if the quest owner cancels the quest */
-                                                                huntingRequestList.status === "Closed" ?
-                                                                    <div>
-                                                                        {
-                                                                            this.props.admin === true ?
-                                                                                <Button
-                                                                                    onClick={() => { this.destroyRequest(huntingRequestList.id) }}
-                                                                                    bsStyle="danger">
-                                                                                    Destroy</Button>
-                                                                                :
-                                                                                <span>Closed</span>
-                                                                        }
-                                                                    </div>
-                                                                    :
-                                                                    <div>
-                                                                        {/* if the quest is incomplete, show all the other buttons */
-                                                                            huntingRequestList.status === "Complete" ?
-                                                                                <div>
-                                                                                    {
-                                                                                        this.props.admin === true ?
-                                                                                            <Button
-                                                                                                onClick={() => { this.destroyRequest(huntingRequestList.id) }}
-                                                                                                bsStyle="danger">
-                                                                                                Destroy</Button>
-                                                                                            :
-                                                                                            <span>Completed</span>
-                                                                                    }
-                                                                                </div>
-                                                                                :
-                                                                                <div>
-                                                                                    {/* if the logged in user owns the quest, show send-payment button */
-                                                                                        huntingRequestList.userID === this.props.userID ?
-                                                                                            <div>
-                                                                                                {/* if the logged in user owns the quest AND itemSent status is false, show send payment button*/
-                                                                                                    huntingRequestList.userID === this.props.userID && huntingRequestList.itemSent === true ?
-
-                                                                                                        <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
-                                                                                                        :
-                                                                                                        <Button disabled>Send Payment</Button>}
-                                                                                            </div>
-                                                                                            :
-                                                                                            null
-                                                                                    }
-
-
-                                                                                    {/* if the logged in user is NOT quest ownwer, show accept button */
-                                                                                        huntingRequestList.userID !== this.props.userID ?
-                                                                                            <span>
-                                                                                                {/* if the quest has not been accepted, show accept quest button */
-                                                                                                    huntingRequestList.accepted === false ?
-                                                                                                        <div>
-                                                                                                            <Modal show={this.state.show2} onHide={this.handleClose2}>
-                                                                                                                <Modal.Header closeButton>
-                                                                                                                    <Modal.Title id="contained-modal-title-sm">Accept Request</Modal.Title>
-                                                                                                                </Modal.Header>
-                                                                                                                <Modal.Body>
-                                                                                                                    <Row>
-                                                                                                                        <Col xs={12} className="text-center">
-                                                                                                                            <div>Confirm accepting of this request</div>
-                                                                                                                            <br />
-                                                                                                                            <div>
-                                                                                                                                <Button
-                                                                                                                                    bsStyle="success"
-                                                                                                                                    bsSize="large"
-                                                                                                                                    onClick={() => {
-                                                                                                                                        this.acceptRequest(this.state.id)
-                                                                                                                                        this.handleClose2()
-                                                                                                                                    }}>
-                                                                                                                                    Accept this quest
-                                                                                                                        </Button>
-                                                                                                                            </div>
-                                                                                                                        </Col>
-                                                                                                                    </Row>
-                                                                                                                </Modal.Body>
-                                                                                                            </Modal>
-                                                                                                            <Button onClick={() => { this.handleShow2(huntingRequestList) }}>Accept</Button>
-                                                                                                            {/* <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button> */}
-                                                                                                        </div>
-                                                                                                        :
-                                                                                                        <span>
-                                                                                                            {/* if the logged in user is the farmer, show that they have accepted the quest */
-                                                                                                                huntingRequestList.farmer === this.props.userID ?
-                                                                                                                    <Button disabled>Accepted</Button>
-                                                                                                                    :
-                                                                                                                    null
-                                                                                                            }
-                                                                                                        </span>
-                                                                                                }
-                                                                                            </span>
-                                                                                            :
-                                                                                            null
-                                                                                    }
-
-                                                                                    {/* if the logged in user is the farmer, AND quest has been accepted, AND items haven't been sent, show send items button */
-                                                                                        huntingRequestList.farmer === this.props.ign && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
-                                                                                            <span>
-                                                                                                {/* if the logged in user accepted the quest, show the send items button */
-                                                                                                    huntingRequestList.accepted === false ?
-
-                                                                                                        <Button disabled>Items Sent</Button>
-                                                                                                        :
-                                                                                                        <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
-                                                                                                }
-                                                                                            </span>
-                                                                                            :
-                                                                                            null
-                                                                                    }
-                                                                                </div>
-                                                                        }
-                                                                    </div>
-                                                            }
-                                                        </Panel.Footer>
-                                                    </Panel.Body>
-                                                </Panel>
-                                            ))}
-                                    </PanelGroup>
-                                    :
-                                    null
-                                }
-
+                               
                                 {this.state.toggleBoxes === true ?
                                     <div>
                                         {/* Show the entire arry of huntingRequestList BACKWARDS */
@@ -639,3 +457,211 @@ class Board extends React.Component {
 
 export default Board
 
+// {this.state.toggleList === true ?
+//     <PanelGroup accordian="true" id="accordian">
+//         {/* Show the entire array of huntingRequestList BACKWARDS */
+//             this.state.huntingRequestList.slice(0).reverse().map((huntingRequestList, index) => (
+//                 <Panel
+//                     eventKey={index}
+//                     key={index}
+//                     id={huntingRequestList.id}
+//                     bsStyle={(huntingRequestList.statusColor)}>
+//                     <Panel.Heading>
+//                         <Panel.Title toggle>
+//                             <Row>
+//                                 <Col xs={8}>
+//                                     <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}{huntingRequestList.item}
+//                                 </Col>
+//                                 <Col xs={3} className="text-right">
+//                                     {huntingRequestList.payout}
+//                                 </Col>
+//                                 <Col xs={1}>
+//                                     {/* if the logged in user owns the quest, has button to cancel quest*/
+//                                         huntingRequestList.userID === this.props.userID && huntingRequestList.status !== "Closed" ?
+//                                             <Button
+//                                                 className="text-right"
+//                                                 bsStyle="danger"
+//                                                 bsSize="xsmall"
+//                                                 onClick={() => { this.handleShow1(huntingRequestList) }}>
+//                                                 {" "}X{" "}
+//                                             </Button>
+//                                             :
+//                                             null
+//                                     }
+//                                     <Modal show={this.state.show1} onHide={this.handleClose1}>
+//                                         <Modal.Header closeButton>
+//                                             <Modal.Title id="contained-modal-title-sm">Cancel Request</Modal.Title>
+//                                         </Modal.Header>
+//                                         <Modal.Body>
+//                                             <Row>
+//                                                 <Col xs={12} className="text-center">
+//                                                     <div>Confirm cancellation of your request</div>
+//                                                     <br />
+//                                                     <div>
+//                                                         <Button
+//                                                             bsStyle="danger"
+//                                                             bsSize="large"
+//                                                             onClick={() => {
+//                                                                 this.cancelRequest(this.state.id)
+//                                                                 this.handleClose1()
+//                                                             }}>
+//                                                             Cancel My Request
+//                                                         </Button>
+//                                                     </div>
+//                                                 </Col>
+//                                             </Row>
+//                                         </Modal.Body>
+//                                     </Modal>
+//                                 </Col>
+//                             </Row>
+//                         </Panel.Title>
+//                     </Panel.Heading>
+//                     <Panel.Body collapsible={true}>
+//                         <Row>
+//                             <Col xs={12} className="text-center">
+//                                 <div>
+//                                     <p>{huntingRequestList.date}</p>
+//                                     <h4>{huntingRequestList.status}</h4>
+//                                 </div>
+//                             </Col>
+//                         </Row>
+//                         <Row>
+//                             <Col xs={6} className="text-left">
+//                                 <p>Payee:<br /><b>{huntingRequestList.poster}</b></p>
+//                             </Col>
+//                             <Col xs={6} className="text-right">
+//                                 <p>Accepted By:<br /><b>{huntingRequestList.farmer}</b></p>
+//                             </Col>
+//                         </Row>
+//                         <br />
+//                         <Row>
+//                             <Col xs={12} className="text-center">
+//                                 <p>Item:{" "}
+//                                     <img src={huntingRequestList.itemImage} alt="item thumb" />{" "}
+//                                     <a href={huntingRequestList.itemLink} target="_blank" rel="noopener noreferrer">{huntingRequestList.item}</a>
+//                                 </p>
+//                                 <p>Quantity: <b>{huntingRequestList.quantity}</b></p>
+//                                 <p>Payout: <b>{huntingRequestList.payout}</b></p>
+//                             </Col>
+//                         </Row>
+//                         {/* Begin button display area  */}
+//                         <Panel.Footer className="text-center">
+//                             {/* if the quest owner cancels the quest */
+//                                 huntingRequestList.status === "Closed" ?
+//                                     <div>
+//                                         {
+//                                             this.props.admin === true ?
+//                                                 <Button
+//                                                     onClick={() => { this.destroyRequest(huntingRequestList.id) }}
+//                                                     bsStyle="danger">
+//                                                     Destroy</Button>
+//                                                 :
+//                                                 <span>Closed</span>
+//                                         }
+//                                     </div>
+//                                     :
+//                                     <div>
+//                                         {/* if the quest is incomplete, show all the other buttons */
+//                                             huntingRequestList.status === "Complete" ?
+//                                                 <div>
+//                                                     {
+//                                                         this.props.admin === true ?
+//                                                             <Button
+//                                                                 onClick={() => { this.destroyRequest(huntingRequestList.id) }}
+//                                                                 bsStyle="danger">
+//                                                                 Destroy</Button>
+//                                                             :
+//                                                             <span>Completed</span>
+//                                                     }
+//                                                 </div>
+//                                                 :
+//                                                 <div>
+//                                                     {/* if the logged in user owns the quest, show send-payment button */
+//                                                         huntingRequestList.userID === this.props.userID ?
+//                                                             <div>
+//                                                                 {/* if the logged in user owns the quest AND itemSent status is false, show send payment button*/
+//                                                                     huntingRequestList.userID === this.props.userID && huntingRequestList.itemSent === true ?
+
+//                                                                         <Button onClick={() => this.payoutSent(huntingRequestList.id)}>Send Payment</Button>
+//                                                                         :
+//                                                                         <Button disabled>Send Payment</Button>}
+//                                                             </div>
+//                                                             :
+//                                                             null
+//                                                     }
+
+
+//                                                     {/* if the logged in user is NOT quest ownwer, show accept button */
+//                                                         huntingRequestList.userID !== this.props.userID ?
+//                                                             <span>
+//                                                                 {/* if the quest has not been accepted, show accept quest button */
+//                                                                     huntingRequestList.accepted === false ?
+//                                                                         <div>
+//                                                                             <Modal show={this.state.show2} onHide={this.handleClose2}>
+//                                                                                 <Modal.Header closeButton>
+//                                                                                     <Modal.Title id="contained-modal-title-sm">Accept Request</Modal.Title>
+//                                                                                 </Modal.Header>
+//                                                                                 <Modal.Body>
+//                                                                                     <Row>
+//                                                                                         <Col xs={12} className="text-center">
+//                                                                                             <div>Confirm accepting of this request</div>
+//                                                                                             <br />
+//                                                                                             <div>
+//                                                                                                 <Button
+//                                                                                                     bsStyle="success"
+//                                                                                                     bsSize="large"
+//                                                                                                     onClick={() => {
+//                                                                                                         this.acceptRequest(this.state.id)
+//                                                                                                         this.handleClose2()
+//                                                                                                     }}>
+//                                                                                                     Accept this quest
+//                                                                                         </Button>
+//                                                                                             </div>
+//                                                                                         </Col>
+//                                                                                     </Row>
+//                                                                                 </Modal.Body>
+//                                                                             </Modal>
+//                                                                             <Button onClick={() => { this.handleShow2(huntingRequestList) }}>Accept</Button>
+//                                                                             {/* <Button onClick={() => this.acceptRequest(huntingRequestList.id)}>Accept</Button> */}
+//                                                                         </div>
+//                                                                         :
+//                                                                         <span>
+//                                                                             {/* if the logged in user is the farmer, show that they have accepted the quest */
+//                                                                                 huntingRequestList.farmer === this.props.userID ?
+//                                                                                     <Button disabled>Accepted</Button>
+//                                                                                     :
+//                                                                                     null
+//                                                                             }
+//                                                                         </span>
+//                                                                 }
+//                                                             </span>
+//                                                             :
+//                                                             null
+//                                                     }
+
+//                                                     {/* if the logged in user is the farmer, AND quest has been accepted, AND items haven't been sent, show send items button */
+//                                                         huntingRequestList.farmer === this.props.ign && huntingRequestList.accepted === true && huntingRequestList.itemSent === false ?
+//                                                             <span>
+//                                                                 {/* if the logged in user accepted the quest, show the send items button */
+//                                                                     huntingRequestList.accepted === false ?
+
+//                                                                         <Button disabled>Items Sent</Button>
+//                                                                         :
+//                                                                         <Button onClick={() => this.itemSent(huntingRequestList.id)}>Send Items</Button>
+//                                                                 }
+//                                                             </span>
+//                                                             :
+//                                                             null
+//                                                     }
+//                                                 </div>
+//                                         }
+//                                     </div>
+//                             }
+//                         </Panel.Footer>
+//                     </Panel.Body>
+//                 </Panel>
+//             ))}
+//     </PanelGroup>
+//     :
+//     null
+// }

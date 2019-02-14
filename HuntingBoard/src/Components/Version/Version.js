@@ -35,10 +35,11 @@ class Version extends React.Component {
                 <Modal show={this.state.show} onHide={this.handleClose} style={{ top: "50%", left: "50%" }}>
                     <Modal.Header closeButton>
                         <Modal.Title>
-                            Current Version: 1.1
+                            Current Version: 2.0
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <p>Version 2.0: working email notifications, removed accordian option, admin removal feature</p>
                         <p>Version 1.2: Welcome Mat page, community/official links, warning fixes, server backend</p>
                         <p>Version 1.1: Footer implementation, version list, accept button modal</p>
                         <p>Version 1.0: Official release, account registrations open!</p>
