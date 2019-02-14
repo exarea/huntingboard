@@ -39,8 +39,7 @@ class Version extends React.Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <p>Version 1.2: Welcome Mat page, community/official links, warning fixes</p>
-
+                        <p>Version 1.2: Welcome Mat page, community/official links, warning fixes, server backend</p>
                         <p>Version 1.1: Footer implementation, version list, accept button modal</p>
                         <p>Version 1.0: Official release, account registrations open!</p>
                         <p>Version 0.1: Beta release, basic functionality, firebase connections</p>

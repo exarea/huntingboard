@@ -16,6 +16,7 @@ class Board extends React.Component {
 
             admin: "",
             email: "",
+            questUserID: "",
             toggleList: false,
             toggleBoxes: true,
         };
@@ -145,11 +146,31 @@ class Board extends React.Component {
         //     status: "In Progress",
         //     statusColor: "warning"
         // });
-        const farmer = this.props.ign;
-        const email = this.props.email;
-        console.log(huntingRequestList);
-        console.log(email);
-        const acceptance = await axios.post("/api/form", { farmer, email })
+        var getuserID = [];
+        // var usersAll = [];
+        
+        firebase.database().ref("huntingRequest/").on("value").then( function (snapshot) {
+            getuserID = (snapshot.val())
+
+        }, function(error) {
+            return console.log(error);
+        });
+
+        console.log("owner of quest: " + getuserID[huntingRequestList].userID);
+        // const questOwner = getuserID[huntingRequestList].userID
+
+        // var usersAll = [];
+        // firebase.database().ref("users/").on("value", function (snapshot) {
+        //     return usersAll = (snapshot.val())
+        //     // console.log("firebase user reference: " + snapshot.val().email)
+        //     // const questOwnerEmail = snapshot.val().email
+        // });
+        // console.log(usersAll[questOwner])
+        // API Call to backend for email notification
+        // const farmer = this.props.ign;
+        // const email = questOwnerEmail
+        // const acceptance = await axios.post("/api/acceptQuest", { farmer, email })
+
     };
 
     itemSent(huntingRequestList) {
