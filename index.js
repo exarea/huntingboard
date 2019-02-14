@@ -27,10 +27,10 @@ app.post("/api/acceptQuest", (req, res) => {
     // var mailerUser = process.env.REACT_APP_NODEMAILER_USER;
     // var passUser = process.env.REACT_APP_NODEMAILER_PASSWORD
     // console.log(process.env);
-    
+
     const transporter = nodemailer.createTransport({
         service: "gmail",
-    
+
         auth: {
             user: "mosjoandy@gmail.com",
             pass: "Dee1234!"
@@ -73,10 +73,10 @@ app.post("/api/sentItems", (req, res) => {
                 <h3>Mosjoandy</p>
             </div>
         `;
-    
+
     const transporter = nodemailer.createTransport({
         service: "gmail",
-    
+
         auth: {
             user: "mosjoandy@gmail.com",
             pass: "Dee1234!"
@@ -118,10 +118,10 @@ app.post("/api/sentPayment", (req, res) => {
                 <h3>Mosjoandy</p>
             </div>
         `;
-    
+
     const transporter = nodemailer.createTransport({
         service: "gmail",
-    
+        port: 465,
         auth: {
             user: "mosjoandy@gmail.com",
             pass: "Dee1234!"
