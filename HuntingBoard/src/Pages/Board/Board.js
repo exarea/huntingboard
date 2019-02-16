@@ -141,31 +141,29 @@ class Board extends React.Component {
     async acceptRequest(huntingRequestList) {
         // Pass huntingRequestList argument, make reference and update specific object
         // console.log("this is the id of the item accepted" + huntingRequestList);
-        firebase.database().ref("huntingRequest/" + huntingRequestList).update({
-            // update states accordingly and push firebase
-            farmer: this.props.ign,
-            accepted: true,
-            status: "In Progress",
-            statusColor: "warning",
-            farmerID: this.props.email
-        });
+        // firebase.database().ref("huntingRequest/" + huntingRequestList).update({
+        //     // update states accordingly and push firebase
+        //     farmer: this.props.ign,
+        //     accepted: true,
+        //     status: "In Progress",
+        //     statusColor: "warning",
+        //     farmerID: this.props.email
+        // });
 
         var that = this;
         firebase.database().ref("huntingRequest/").once("value").then(function (snapshot) {
-            const getuserID = snapshot.val()
-            const userID = (getuserID[huntingRequestList].userID)
+            const getuserID = snapshot.val();
+            const userID = (getuserID[huntingRequestList].userID);
             firebase.database().ref("users/" + userID).once("value").then(function (snapshot) {
-                const getuserEmail = snapshot.val()
-                that.setState({ getuserEmail: getuserEmail.email })
+                const getuserEmail = snapshot.val();
+                const farmer = that.props.ign;
+                const email = getuserEmail.email;
+                const item = getuserID[huntingRequestList].item;
+                const quantity = getuserID[huntingRequestList].quantity;
+                axios.post("/api/acceptQuest", { farmer, email, item, quantity });
+                console.log("sending email...");
             });
         });
-        setTimeout(() => {
-            // API Call to backend for email notification
-            console.log("sending email...")
-            const farmer = this.props.ign;
-            const email = this.state.getuserEmail;
-            axios.post("/api/acceptQuest", { farmer, email })
-        }, 3000);
     };
 
     async itemSent(huntingRequestList) {
@@ -179,20 +177,16 @@ class Board extends React.Component {
 
         var that = this;
         firebase.database().ref("huntingRequest/").once("value").then(function (snapshot) {
-            const getuserID = snapshot.val()
-            const userID = (getuserID[huntingRequestList].userID)
+            const getuserID = snapshot.val();
+            const userID = (getuserID[huntingRequestList].userID);
             firebase.database().ref("users/" + userID).once("value").then(function (snapshot) {
-                const getuserEmail = snapshot.val()
-                that.setState({ getuserEmail: getuserEmail.email })
+                const getuserEmail = snapshot.val();
+                const farmer = that.props.ign;
+                const email = getuserEmail.email;
+                axios.post("/api/sentItems", { farmer, email });
+                console.log("sending email...");
             });
         });
-        setTimeout(() => {
-            // API Call to backend for email notification
-            console.log("sending email...")
-            const farmer = this.props.ign;
-            const email = this.state.getuserEmail;
-            axios.post("/api/sentItems", { farmer, email })
-        }, 3000);
     };
 
     async payoutSent(huntingRequestList) {
@@ -205,19 +199,13 @@ class Board extends React.Component {
             statusColor: "primary"
         });
 
-        var that = this;
         firebase.database().ref("huntingRequest/").once("value").then(function(snapshot) {
-            const getFarmerID = snapshot.val()
-            // console.log(getFarmerID[huntingRequestList].farmerID);
-            that.setState({ getfarmerID: getFarmerID[huntingRequestList].farmerID })
-        });
-        setTimeout(() => {
-            // API Call to backend for email notification
-            console.log("sending email...")
+            const getFarmerID = snapshot.val();      
             const payee = this.props.ign;
-            const email = this.state.getfarmerID;
-            axios.post("/api/sentPayment", { payee, email })
-        }, 3000);
+            const email = getFarmerID[huntingRequestList].farmerID;
+            axios.post("/api/sentPayment", { payee, email });
+            console.log("sending email...");
+        });
     };
 
     render() {

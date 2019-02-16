@@ -62,18 +62,12 @@ class Home extends Component {
             ign: userIGN,
             email: userEmail,
             admin: admin,
-          }); // WORKS - sets that.state.ign to ign from database 
-        }) // Async issue, - use setTimeout!
-        setTimeout(() => {
-          // console.log(that.state.ign); // WORKS NOW!!
-          // console.log(that.state.admin);
-          this.setState({
             spinnerShow: false,
             userExists: true,
             show: false,
             error: null,
-          });
-        }, 3000);
+          }); 
+        });
       })
       .catch((error) => {
         this.setState({ error: error });
@@ -83,7 +77,10 @@ class Home extends Component {
   logOut() {
     firebase.auth().signOut();
     this.setState({
-      userExists: false
+      userExists: false,
+      ign: "",
+      email: "",
+      admin: ""
     });
     console.log("you've logged out");
   };

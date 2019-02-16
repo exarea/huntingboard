@@ -61,7 +61,7 @@ const WelcomeMat = () => (
                                     href="http://tcalc.github.io/gmc/"
                                     target="_blank"
                                     rel="noopener noreferrer">
-                                    TalonRO Ragnarok Resources
+                                    TalonRO GMC/Ragnarok Resource
                                 </Button>
                             </p>
                             <p>
@@ -70,6 +70,14 @@ const WelcomeMat = () => (
                                     target="_blank"
                                     rel="noopener noreferrer">
                                     TalonRO Item Crafting Finder Tool
+                                </Button>
+                            </p>
+                            <p>
+                                <Button
+                                    href="https://calc.talonro.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                    TalonRO Calculator
                                 </Button>
                             </p>
                         </Col>

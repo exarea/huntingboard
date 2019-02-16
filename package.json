@@ -7,7 +7,13 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix HuntingBoard",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:database": "firebase deploy --only database",
+    "deploy:firestore": "firebase deploy --only firestore",
+    "deploy:storage": "firebase deploy --only storage",
+    "deploy:functions": "firebase deploy --only functions"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +21,11 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "nodemailer": "^5.1.1"
+  },
+  "devDependencies": {
+    "firebase-tools": "^6.3.1"
   }
 }

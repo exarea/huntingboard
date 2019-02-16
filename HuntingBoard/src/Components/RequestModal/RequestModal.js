@@ -31,6 +31,7 @@ class RequestModal extends React.Component {
             payoutSent: false
         };
         this.handleChange = this.handleChange.bind(this);
+        // this.handleChange2 = this.handleChange2.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.handleShow = this.handleShow.bind(this);
@@ -41,8 +42,36 @@ class RequestModal extends React.Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    // handleChange2(event) {
+
+    //     // Adjust every 3 digits to have comma inbetwen --> 1000 becomes 1,000 --> 2000000 becomes
+    //     this.setState({ [event.target.name]: event.target.value});
+    // };
+
     handleSubmit(event) {
         event.preventDefault();
+        var payout = this.state.payout;
+        var quantity = this.state.quantity;
+
+        const addCommas = function (input) {
+            const inputLength = input.length;
+            let output = "";
+
+            for (let i = 0; i < inputLength; i++) {
+                output += input[i];
+
+                if (input.length > 3 && i !== inputLength - 1) {
+                    if (((inputLength - 2) % 3 === 0 && (i + 2) % 3 === 0)
+                        || ((inputLength - 1) % 3 === 0 && (i % 3 === 0))
+                        || (inputLength % 3 === 0 && (i + 1) % 3 === 0 && i > 0)) {
+                        output += ",";
+                    }
+                }
+            }
+            // console.log(output)
+            return output;
+        };
+
         // Run forloop to go through itemList json
         for (var i = 0; i < itemList.length; i++) {
             // if the item user is trying to create exists in the json, pull data
@@ -62,13 +91,13 @@ class RequestModal extends React.Component {
             userID: this.props.userID,
             poster: this.props.ign,
             farmer: "Open",
-            payout: this.state.payout + " zeny",
+            payout: addCommas(payout) + " zeny",
             item: this.state.item,
             // item from forloop accessing itemList json shown here
             itemImage: itemImage,
             itemLink: itemLink,
             itemSent: false,
-            quantity: this.state.quantity,
+            quantity:  addCommas(quantity),
             status: "Open",
             statusColor: "success",
             accepted: false,
@@ -118,7 +147,7 @@ class RequestModal extends React.Component {
 
         const payoutPopOver = (
             <Popover id="popover-trigger-hover-focus">
-                Specify the <strong>exact amount</strong> in the designated format with commas. (#,###,### or ###,###)
+                Specify the <strong>exact amount</strong>!
             </Popover>
         );
 
@@ -130,7 +159,7 @@ class RequestModal extends React.Component {
 
         const quantityPopOver = (
             <Popover id="popover-trigger-hover-focus">
-                Specify the exact amount in the designated format with commas. (#,### or ###)
+                Specify the exact number of items requested.
             </Popover>
         );
 

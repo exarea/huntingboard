@@ -17,7 +17,7 @@ const Footer = () => (
                     © 2019 Mosjoandy
             </Col>
                 <Col xs={4}>
-                    <div>Version 1.0 <Version /></div>
+                    <div><Version /></div>
                    
                 </Col>
             </Row>
