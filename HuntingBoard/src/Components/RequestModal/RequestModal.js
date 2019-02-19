@@ -11,7 +11,6 @@ class RequestModal extends React.Component {
             show: false,
 
             userID: this.props.userID,
-
             submitted: false,
 
             date: new Date().toDateString(),
@@ -31,7 +30,6 @@ class RequestModal extends React.Component {
             payoutSent: false
         };
         this.handleChange = this.handleChange.bind(this);
-        // this.handleChange2 = this.handleChange2.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.handleShow = this.handleShow.bind(this);
@@ -41,12 +39,6 @@ class RequestModal extends React.Component {
     handleChange(event) {
         this.setState({ [event.target.name]: event.target.value });
     };
-
-    // handleChange2(event) {
-
-    //     // Adjust every 3 digits to have comma inbetwen --> 1000 becomes 1,000 --> 2000000 becomes
-    //     this.setState({ [event.target.name]: event.target.value});
-    // };
 
     handleSubmit(event) {
         event.preventDefault();
@@ -174,6 +166,7 @@ class RequestModal extends React.Component {
                             </Panel.Heading>
                             <Panel.Body>
                                 <p>To create a new hunting request, complete the form and submit! </p>
+                                <h3>Your IGN: {this.props.ign}</h3>
                             </Panel.Body>
                             <Panel.Footer>
                                 <Button onClick={this.handleShow}>New Hunting Request</Button>

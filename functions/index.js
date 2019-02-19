@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const express = require("express");
 const bodyparser = require("body-parser");
 const nodemailer = require("nodemailer");
@@ -152,3 +153,5 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log("Server listening on Port" + PORT);
 });
+
+exports.app = functions.https.onRequest(app);

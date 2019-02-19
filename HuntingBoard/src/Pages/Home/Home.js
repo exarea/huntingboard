@@ -66,7 +66,7 @@ class Home extends Component {
             userExists: true,
             show: false,
             error: null,
-          }); 
+          });
         });
       })
       .catch((error) => {
@@ -103,7 +103,7 @@ class Home extends Component {
     const { email, password, error } = this.state;
     return (
       <div>
-        <Nav>
+        <Nav ign={this.state.ign}>
           {
             this.state.userExists === true ?
               <Button bsStyle="primary" onClick={this.logOut}>Logout</Button>

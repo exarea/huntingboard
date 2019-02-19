@@ -141,14 +141,14 @@ class Board extends React.Component {
     async acceptRequest(huntingRequestList) {
         // Pass huntingRequestList argument, make reference and update specific object
         // console.log("this is the id of the item accepted" + huntingRequestList);
-        // firebase.database().ref("huntingRequest/" + huntingRequestList).update({
-        //     // update states accordingly and push firebase
-        //     farmer: this.props.ign,
-        //     accepted: true,
-        //     status: "In Progress",
-        //     statusColor: "warning",
-        //     farmerID: this.props.email
-        // });
+        firebase.database().ref("huntingRequest/" + huntingRequestList).update({
+            // update states accordingly and push firebase
+            farmer: this.props.ign,
+            accepted: true,
+            status: "In Progress",
+            statusColor: "warning",
+            farmerID: this.props.email
+        });
 
         var that = this;
         firebase.database().ref("huntingRequest/").once("value").then(function (snapshot) {
@@ -160,7 +160,7 @@ class Board extends React.Component {
                 const email = getuserEmail.email;
                 const item = getuserID[huntingRequestList].item;
                 const quantity = getuserID[huntingRequestList].quantity;
-                axios.post("/api/acceptQuest", { farmer, email, item, quantity });
+                axios.post("/acceptQuest", { farmer, email, item, quantity });
                 console.log("sending email...");
             });
         });
@@ -183,7 +183,7 @@ class Board extends React.Component {
                 const getuserEmail = snapshot.val();
                 const farmer = that.props.ign;
                 const email = getuserEmail.email;
-                axios.post("/api/sentItems", { farmer, email });
+                axios.post("/sentItems", { farmer, email });
                 console.log("sending email...");
             });
         });
@@ -203,7 +203,7 @@ class Board extends React.Component {
             const getFarmerID = snapshot.val();      
             const payee = this.props.ign;
             const email = getFarmerID[huntingRequestList].farmerID;
-            axios.post("/api/sentPayment", { payee, email });
+            axios.post("/sentPayment", { payee, email });
             console.log("sending email...");
         });
     };
