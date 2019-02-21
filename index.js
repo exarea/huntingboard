@@ -8,7 +8,7 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
 //Accept Quest API Email Notification
-app.post("/acceptQuest", (req, res) => {
+app.post("/api/acceptQuest", (req, res) => {
     const htmlEmail =
         `
             <div>
@@ -55,7 +55,7 @@ app.post("/acceptQuest", (req, res) => {
 });
 
 //Items Sent API Email Notification
-app.post("/sentItems", (req, res) => {
+app.post("/api/sentItems", (req, res) => {
     const htmlEmail =
         `
             <div>
@@ -103,7 +103,7 @@ app.post("/sentItems", (req, res) => {
 });
 
 //Payment Sent API Email Notification
-app.post("/sentPayment", (req, res) => {
+app.post("/api/sentPayment", (req, res) => {
     const htmlEmail =
         `
             <div>

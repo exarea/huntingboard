@@ -160,7 +160,7 @@ class Board extends React.Component {
                 const email = getuserEmail.email;
                 const item = getuserID[huntingRequestList].item;
                 const quantity = getuserID[huntingRequestList].quantity;
-                axios.post("/acceptQuest", { farmer, email, item, quantity });
+                axios.post("/api/acceptQuest", { farmer, email, item, quantity });
                 console.log("sending email...");
             });
         });
@@ -183,7 +183,7 @@ class Board extends React.Component {
                 const getuserEmail = snapshot.val();
                 const farmer = that.props.ign;
                 const email = getuserEmail.email;
-                axios.post("/sentItems", { farmer, email });
+                axios.post("/api/sentItems", { farmer, email });
                 console.log("sending email...");
             });
         });
@@ -201,9 +201,9 @@ class Board extends React.Component {
 
         firebase.database().ref("huntingRequest/").once("value").then(function(snapshot) {
             const getFarmerID = snapshot.val();      
-            const payee = this.props.ign;
+            const payee = that.props.ign;
             const email = getFarmerID[huntingRequestList].farmerID;
-            axios.post("/sentPayment", { payee, email });
+            axios.post("/api/sentPayment", { payee, email });
             console.log("sending email...");
         });
     };

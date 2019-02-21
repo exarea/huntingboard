@@ -9,7 +9,7 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
 //Accept Quest API Email Notification
-app.post("/acceptQuest", (req, res) => {
+app.post("/api/acceptQuest", (req, res) => {
     const htmlEmail =
         `
             <div>
@@ -56,7 +56,7 @@ app.post("/acceptQuest", (req, res) => {
 });
 
 //Items Sent API Email Notification
-app.post("/sentItems", (req, res) => {
+app.post("/api/sentItems", (req, res) => {
     const htmlEmail =
         `
             <div>
@@ -104,7 +104,7 @@ app.post("/sentItems", (req, res) => {
 });
 
 //Payment Sent API Email Notification
-app.post("/sentPayment", (req, res) => {
+app.post("/api/sentPayment", (req, res) => {
     const htmlEmail =
         `
             <div>
@@ -148,10 +148,12 @@ app.post("/sentPayment", (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 3001;
+// const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
-    console.log("Server listening on Port" + PORT);
-});
+// app.listen(PORT, () => {
+//     console.log("Server listening on Port" + PORT);
+// });
 
-exports.app = functions.https.onRequest(app);
+exports.app = functions.https.onRequest((req, res) => {
+    
+})
