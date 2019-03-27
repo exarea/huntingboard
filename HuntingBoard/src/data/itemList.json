@@ -158,6 +158,11 @@
         "value": "Crystal Of Darkness",
         "image": "https://panel.talonro.com/images/items/small/7799.gif",
         "link": "https://panel.talonro.com/itemdb/7799/"
+    }, 
+    {
+        "value": "Crystal Fragment",
+        "image": "https://panel.talonro.com/images/items/small/7321.gif",
+        "link": "https://panel.talonro.com/itemdb/7321/"
     },
     {
         "value": "Cultish Masque",
